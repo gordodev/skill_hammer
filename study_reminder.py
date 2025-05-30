@@ -21,6 +21,7 @@ class StudyReminder:
         self.time_remaining = self.config.get('interval_minutes', 10) * 60
         self.quiz_active = False
         self.current_question = None
+        self.user_answer = ""
         
         # Question bank
         self.questions = self.load_questions()
@@ -30,7 +31,7 @@ class StudyReminder:
         
         # Start countdown
         self.update_countdown()
-        
+    
     def load_config(self):
         """Load or create configuration file"""
         config_file = 'study_config.json'
@@ -61,9 +62,24 @@ class StudyReminder:
             return default_config
     
     def load_questions(self):
-        """Load comprehensive question bank"""
+        """Load questions from external JSON file"""
+        questions_file = 'questions.json'
+        
+        try:
+            if os.path.exists(questions_file):
+                with open(questions_file, 'r') as f:
+                    data = json.load(f)
+                    return data.get('questions', [])
+            else:
+                print(f"Warning: {questions_file} not found. Using default questions.")
+                return self.get_default_questions()
+        except Exception as e:
+            print(f"Error loading questions: {e}")
+            return self.get_default_questions()
+    
+    def get_default_questions(self):
+        """Fallback questions if JSON file is missing"""
         return [
-            # Python Questions
             {
                 'category': 'Python',
                 'question': 'What is the time complexity of dictionary lookup in Python?',
@@ -72,217 +88,11 @@ class StudyReminder:
                 'explanation': 'Dictionary lookups in Python are O(1) on average because they use hash tables.'
             },
             {
-                'category': 'Python',
-                'question': 'Which Python data structure would you use for a FIFO queue?',
-                'options': ['list', 'collections.deque', 'set', 'dict'],
-                'answer': 1,
-                'explanation': 'collections.deque is optimized for FIFO operations with O(1) append and popleft.'
-            },
-            {
-                'category': 'Python',
-                'question': 'What is the difference between list.append() and list.extend()?',
-                'options': ['No difference', 'append adds one item, extend adds multiple', 'extend is faster', 'append only works with strings'],
-                'answer': 1,
-                'explanation': 'append() adds a single element to the end, extend() adds all elements from an iterable.'
-            },
-            {
-                'category': 'Python',
-                'question': 'In Python, what does the @property decorator do?',
-                'options': ['Makes a method static', 'Converts a method to a property', 'Improves performance', 'Adds type hints'],
-                'answer': 1,
-                'explanation': '@property allows you to access a method like an attribute, enabling getter/setter functionality.'
-            },
-            {
-                'category': 'Python',
-                'question': 'What is a generator in Python?',
-                'options': ['A function that returns multiple values at once', 'A function that yields values one at a time', 'A class that generates random numbers', 'A module for creating lists'],
-                'answer': 1,
-                'explanation': 'Generators yield values one at a time using the yield keyword, saving memory for large datasets.'
-            },
-            
-            # SQL Questions
-            {
                 'category': 'SQL',
                 'question': 'Which JOIN returns all rows from both tables?',
                 'options': ['INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL OUTER JOIN'],
                 'answer': 3,
                 'explanation': 'FULL OUTER JOIN returns all rows from both tables, with NULL values where no match exists.'
-            },
-            {
-                'category': 'SQL',
-                'question': 'What SQL statement would you use to add a new column to an existing table?',
-                'options': ['INSERT COLUMN', 'ALTER TABLE ADD', 'UPDATE TABLE', 'CREATE COLUMN'],
-                'answer': 1,
-                'explanation': 'ALTER TABLE table_name ADD column_name datatype; is the correct syntax.'
-            },
-            {
-                'category': 'SQL',
-                'question': 'What is the difference between WHERE and HAVING clauses?',
-                'options': ['No difference', 'WHERE filters rows, HAVING filters groups', 'HAVING is faster', 'WHERE only works with strings'],
-                'answer': 1,
-                'explanation': 'WHERE filters rows before grouping, HAVING filters groups after GROUP BY.'
-            },
-            {
-                'category': 'SQL',
-                'question': 'Which SQL function would you use to get the current date?',
-                'options': ['NOW()', 'GETDATE()', 'CURRENT_DATE', 'All of the above (varies by DBMS)'],
-                'answer': 3,
-                'explanation': 'Different database systems use different functions: MySQL uses NOW(), SQL Server uses GETDATE(), PostgreSQL uses CURRENT_DATE.'
-            },
-            {
-                'category': 'SQL',
-                'question': 'What does the SQL COALESCE function do?',
-                'options': ['Joins tables', 'Returns first non-NULL value', 'Counts rows', 'Sorts data'],
-                'answer': 1,
-                'explanation': 'COALESCE returns the first non-NULL value from a list of expressions.'
-            },
-            
-            # AWS Questions
-            {
-                'category': 'AWS',
-                'question': 'What is AWS Lambda?',
-                'options': ['A database service', 'A serverless compute service', 'A storage service', 'A networking service'],
-                'answer': 1,
-                'explanation': 'AWS Lambda is a serverless compute service that runs code in response to events.'
-            },
-            {
-                'category': 'AWS',
-                'question': 'Which AWS service would you use for a managed relational database?',
-                'options': ['S3', 'EC2', 'RDS', 'Lambda'],
-                'answer': 2,
-                'explanation': 'Amazon RDS (Relational Database Service) provides managed relational databases.'
-            },
-            {
-                'category': 'AWS',
-                'question': 'What is the maximum execution time for an AWS Lambda function?',
-                'options': ['5 minutes', '15 minutes', '30 minutes', '60 minutes'],
-                'answer': 1,
-                'explanation': 'AWS Lambda functions can run for a maximum of 15 minutes.'
-            },
-            {
-                'category': 'AWS',
-                'question': 'Which AWS service provides a CDN (Content Delivery Network)?',
-                'options': ['Route 53', 'CloudFront', 'S3', 'EC2'],
-                'answer': 1,
-                'explanation': 'Amazon CloudFront is AWS\'s content delivery network service.'
-            },
-            {
-                'category': 'AWS',
-                'question': 'What is the purpose of AWS VPC?',
-                'options': ['Virtual Private Cloud for network isolation', 'Virtual Processing Computer', 'Volume Persistent Cache', 'Virtual Platform Console'],
-                'answer': 0,
-                'explanation': 'VPC (Virtual Private Cloud) provides network isolation for your AWS resources.'
-            },
-            
-            # Trading Systems Questions
-            {
-                'category': 'Trading Systems',
-                'question': 'What does FIX stand for in FIX Protocol?',
-                'options': ['Fast Internet Exchange', 'Financial Information eXchange', 'Fixed Income eXchange', 'Financial Integration eXchange'],
-                'answer': 1,
-                'explanation': 'FIX stands for Financial Information eXchange, the standard protocol for electronic trading.'
-            },
-            {
-                'category': 'Trading Systems',
-                'question': 'What is typical latency for high-frequency trading systems?',
-                'options': ['Seconds', 'Milliseconds', 'Microseconds', 'Minutes'],
-                'answer': 2,
-                'explanation': 'Modern HFT systems operate in microseconds or even nanoseconds.'
-            },
-            {
-                'category': 'Trading Systems',
-                'question': 'What is a market maker?',
-                'options': ['A trader who only buys', 'A trader who provides liquidity', 'A regulatory body', 'An exchange operator'],
-                'answer': 1,
-                'explanation': 'Market makers provide liquidity by continuously quoting both buy and sell prices.'
-            },
-            {
-                'category': 'Trading Systems',
-                'question': 'What is NUMA in the context of trading systems?',
-                'options': ['Network Update Management API', 'Non-Uniform Memory Access', 'Normalized Unit Market Analysis', 'Network Unified Messaging Architecture'],
-                'answer': 1,
-                'explanation': 'NUMA (Non-Uniform Memory Access) is critical for optimizing memory access in multi-socket systems.'
-            },
-            {
-                'category': 'Trading Systems',
-                'question': 'What is the purpose of kernel bypass in trading systems?',
-                'options': ['Security', 'Reduce latency', 'Increase storage', 'Improve UI'],
-                'answer': 1,
-                'explanation': 'Kernel bypass allows direct hardware access, reducing latency by avoiding OS overhead.'
-            },
-            {
-                'category': 'Trading Systems',
-                'question': 'What is a FIX session?',
-                'options': ['A trading strategy', 'A connection between two FIX engines', 'A type of order', 'A market data feed'],
-                'answer': 1,
-                'explanation': 'A FIX session is a bi-directional stream of ordered messages between two FIX engines.'
-            },
-            {
-                'category': 'Trading Systems',
-                'question': 'What is the purpose of sequence numbers in FIX protocol?',
-                'options': ['Encryption', 'Message ordering and gap detection', 'Routing', 'Compression'],
-                'answer': 1,
-                'explanation': 'Sequence numbers ensure message ordering and help detect missing messages.'
-            },
-            
-            # General CS/Interview Questions
-            {
-                'category': 'Computer Science',
-                'question': 'What is the time complexity of binary search?',
-                'options': ['O(n)', 'O(log n)', 'O(n log n)', 'O(1)'],
-                'answer': 1,
-                'explanation': 'Binary search has O(log n) time complexity as it halves the search space each iteration.'
-            },
-            {
-                'category': 'Computer Science',
-                'question': 'What is a hash collision?',
-                'options': ['When a hash function fails', 'When two inputs produce the same hash', 'When memory is full', 'When the network fails'],
-                'answer': 1,
-                'explanation': 'A hash collision occurs when two different inputs produce the same hash value.'
-            },
-            {
-                'category': 'Computer Science',
-                'question': 'What is the difference between a process and a thread?',
-                'options': ['No difference', 'Threads share memory, processes don\'t', 'Processes are faster', 'Threads can\'t run in parallel'],
-                'answer': 1,
-                'explanation': 'Threads share memory space within a process, while processes have separate memory spaces.'
-            },
-            {
-                'category': 'Computer Science',
-                'question': 'What is a race condition?',
-                'options': ['Fast code execution', 'When threads compete for resources unpredictably', 'Network latency', 'CPU optimization'],
-                'answer': 1,
-                'explanation': 'A race condition occurs when multiple threads access shared data concurrently, leading to unpredictable results.'
-            },
-            {
-                'category': 'Computer Science',
-                'question': 'What is the purpose of an index in a database?',
-                'options': ['Store more data', 'Speed up queries', 'Encrypt data', 'Reduce storage'],
-                'answer': 1,
-                'explanation': 'Indexes speed up data retrieval by creating a sorted reference to rows in a table.'
-            },
-            
-            # Automation/DevOps Questions
-            {
-                'category': 'Automation',
-                'question': 'What is CI/CD?',
-                'options': ['Continuous Integration/Continuous Deployment', 'Computer Interface/Computer Design', 'Code Integration/Code Debugging', 'Cloud Infrastructure/Cloud Development'],
-                'answer': 0,
-                'explanation': 'CI/CD automates the integration and deployment of code changes.'
-            },
-            {
-                'category': 'Automation',
-                'question': 'What is the purpose of Docker?',
-                'options': ['Database management', 'Containerization', 'Network security', 'Code compilation'],
-                'answer': 1,
-                'explanation': 'Docker provides containerization, packaging applications with their dependencies.'
-            },
-            {
-                'category': 'Automation',
-                'question': 'What is Kubernetes?',
-                'options': ['A programming language', 'A database', 'A container orchestration platform', 'A monitoring tool'],
-                'answer': 2,
-                'explanation': 'Kubernetes orchestrates and manages containerized applications at scale.'
             }
         ]
     
@@ -366,6 +176,47 @@ class StudyReminder:
         )
         self.category_label.pack(side='right')
         
+        # Answer input frame (NEW)
+        input_frame = tk.Frame(main_frame, bg='#2b2b2b', relief='ridge', bd=2)
+        input_frame.pack(fill='x', pady=(0, 20))
+        
+        input_label = tk.Label(
+            input_frame,
+            text="Type your answer first:",
+            font=('Arial', 14),
+            bg='#2b2b2b',
+            fg='#ffcc00'
+        )
+        input_label.pack(pady=(10, 5))
+        
+        # Answer entry field
+        self.answer_entry = tk.Entry(
+            input_frame,
+            font=('Arial', 16),
+            bg='#3a3a3a',
+            fg='white',
+            insertbackground='white',
+            width=50
+        )
+        self.answer_entry.pack(pady=(0, 10))
+        self.answer_entry.bind('<Return>', lambda e: self.submit_typed_answer())
+        
+        # Submit button for typed answer
+        submit_frame = tk.Frame(input_frame, bg='#2b2b2b')
+        submit_frame.pack(pady=(0, 10))
+        
+        self.submit_button = tk.Button(
+            submit_frame,
+            text="Submit Answer",
+            font=('Arial', 14, 'bold'),
+            bg='#00ff00',
+            fg='black',
+            command=self.submit_typed_answer,
+            padx=20,
+            pady=5
+        )
+        self.submit_button.pack()
+        
         # Question frame
         self.question_frame = tk.Frame(main_frame, bg='#2b2b2b', relief='ridge', bd=2)
         self.question_frame.pack(fill='both', expand=True, pady=20)
@@ -381,6 +232,16 @@ class StudyReminder:
             justify='left'
         )
         self.question_label.pack(pady=30, padx=30)
+        
+        # Multiple choice hint label
+        hint_label = tk.Label(
+            self.question_frame,
+            text="Or select from options below:",
+            font=('Arial', 12),
+            bg='#2b2b2b',
+            fg='#999999'
+        )
+        hint_label.pack(pady=(0, 10))
         
         # Options frame
         self.options_frame = tk.Frame(self.question_frame, bg='#2b2b2b')
@@ -415,12 +276,20 @@ class StudyReminder:
     
     def load_question(self):
         """Load a random question"""
+        if not self.questions:
+            self.feedback_label.config(text="No questions available!", fg='#ff6666')
+            return
+            
         self.current_question = random.choice(self.questions)
         
         # Update labels
         self.category_label.config(text=f"Category: {self.current_question['category']}")
         self.question_label.config(text=self.current_question['question'])
         self.feedback_label.config(text="")
+        
+        # Clear answer entry
+        self.answer_entry.delete(0, tk.END)
+        self.answer_entry.focus_set()
         
         # Clear old options
         for widget in self.options_frame.winfo_children():
@@ -436,27 +305,59 @@ class StudyReminder:
                 fg='white',
                 anchor='w',
                 padx=20,
-                command=lambda idx=i: self.check_answer(idx)
+                command=lambda idx=i: self.select_multiple_choice(idx)
             )
             btn.pack(fill='x', pady=5)
     
-    def check_answer(self, selected_index):
-        """Check if answer is correct"""
-        if selected_index == self.current_question['answer']:
-            self.correct_count += 1
-            self.progress_label.config(text=f"Progress: {self.correct_count}/{self.questions_required}")
-            
-            if self.correct_count >= self.questions_required:
-                self.end_quiz()
-            else:
-                self.feedback_label.config(text="✓ Correct! Loading next question...", fg='#00ff00')
-                self.quiz_window.after(1500, self.load_question)
+    def submit_typed_answer(self):
+        """Submit the typed answer"""
+        typed_answer = self.answer_entry.get().strip()
+        if not typed_answer:
+            self.feedback_label.config(text="Please type an answer or select from options below", fg='#ffcc00')
+            return
+        
+        # Check if typed answer matches any option
+        correct_answer_text = self.current_question['options'][self.current_question['answer']].lower()
+        typed_answer_lower = typed_answer.lower()
+        
+        # Check for exact match or if typed answer is contained in correct answer
+        is_correct = (typed_answer_lower == correct_answer_text or 
+                     typed_answer_lower in correct_answer_text or
+                     correct_answer_text in typed_answer_lower)
+        
+        # Also check if it's a partial match of any option
+        for i, option in enumerate(self.current_question['options']):
+            if typed_answer_lower in option.lower() or option.lower() in typed_answer_lower:
+                if i == self.current_question['answer']:
+                    is_correct = True
+                    break
+        
+        if is_correct:
+            self.handle_correct_answer()
         else:
             self.feedback_label.config(
-                text=f"✗ Wrong! {self.current_question['explanation']}",
+                text=f"✗ Wrong! The correct answer is: {self.current_question['options'][self.current_question['answer']]}\n{self.current_question['explanation']}",
                 fg='#ff6666'
             )
             self.quiz_window.after(3000, self.load_question)
+    
+    def select_multiple_choice(self, selected_index):
+        """Handle multiple choice selection - puts answer in text field"""
+        selected_text = self.current_question['options'][selected_index]
+        self.answer_entry.delete(0, tk.END)
+        self.answer_entry.insert(0, selected_text)
+        self.answer_entry.focus_set()
+    
+    def handle_correct_answer(self):
+        """Handle correct answer"""
+        self.correct_count += 1
+        self.progress_label.config(text=f"Progress: {self.correct_count}/{self.questions_required}")
+        
+        if self.correct_count >= self.questions_required:
+            self.end_quiz()
+        else:
+            self.feedback_label.config(text="✓ Correct! Loading next question...", fg='#00ff00')
+            self.quiz_window.after(1500, self.load_question)
     
     def skip_question(self):
         """Skip current question"""
