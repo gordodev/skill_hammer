@@ -8,29 +8,29 @@ A modern, forced-learning application designed to maintain and sharpen technical
 
 ---
 
-## 🎯 Purpose
+## Purpose
 
 In today's tech job market, consistent practice is non-negotiable. **Skill Hammer** keeps your skills sharp by enforcing regular, full-screen quizzes you can't ignore or delay.
 
 ---
 
-## ✨ Features
+## Features
 
-### 🔒 Core Functionality
+### Core Functionality
 
 * **Forced Learning**: Blocks all other activity until the quiz is completed.
-* **Hybrid Answer Input**: Type your answer first, then verify via multiple choice.
+* **Hybrid Answer Input**: Type your response first, then verify via multiple choice.
 * **Smart Scheduling**: Custom intervals between sessions (default: 10 minutes).
 * **Progress Lock**: Continue only after answering a set number of questions correctly.
 * **Persistent Timer**: Always-on countdown tray visible during work.
 
-### 🧠 Learning Experience
+### Learning Experience
 
 * **Question Clicking**: Click a question to instantly Google it if you’re stuck.
 * **Intelligent Feedback**: Wrong answers display explanations to reinforce learning (note: clears too quickly; improvement planned).
 * **Skip Option**: Skip questions without penalty to keep momentum.
 
-### 🖥️ Technical Coverage
+### Technical Coverage
 
 * **Python**: Data structures, algorithms, libraries, best practices.
 * **SQL**: Queries, optimization, design.
@@ -43,7 +43,7 @@ In today's tech job market, consistent practice is non-negotiable. **Skill Hamme
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ### Prerequisites
 
@@ -60,7 +60,7 @@ python study_reminder.py
 
 ---
 
-## 📖 Usage
+## Usage
 
 ### Starting the App
 
@@ -96,7 +96,7 @@ Customize `study_config.json`:
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ### File Structure
 
@@ -140,7 +140,7 @@ skill_hammer/
 
 ---
 
-## 👥 Target Users
+## Target Users
 
 * Engineers prepping for tech interviews
 * DevOps professionals maintaining broad knowledge
@@ -150,7 +150,7 @@ skill_hammer/
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Pull requests are welcome!
 
@@ -164,7 +164,7 @@ Pull requests are welcome!
 
 ---
 
-## 📊 Technical Skills Covered
+## Technical Skills Covered
 
 ### Programming
 
@@ -192,18 +192,14 @@ Pull requests are welcome!
 
 ---
 
-## 📝 License
+## License
 
 MIT License. See `LICENSE` for full terms.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 * Built for job seekers staying sharp
 * Inspired by personal experience with skill decay
 * Designed with modern UX principles (even in `tkinter`)
-
----
-
-**Stay sharp. Stay ready. Let Skill Hammer do the reminding.**
