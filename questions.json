@@ -1,4 +1,95 @@
 [
+{
+  "category": "Python",
+  "question": "Which Python data structure allows duplicate values and preserves order?",
+  "options": ["set", "dict", "list", "tuple"],
+  "answer": 2,
+  "explanation": "Lists allow duplicates and preserve insertion order."
+},
+{
+  "category": "Python",
+  "question": "What happens when you iterate over a string?",
+  "options": ["You get each character", "You get each word", "You get each line", "You get an error"],
+  "answer": 0,
+  "explanation": "Strings are iterable character by character in Python."
+},
+{
+  "category": "Python",
+  "question": "Which is a safe way to unpack a tuple of unknown length?",
+  "options": [
+    "a, b = my_tuple",
+    "a, b, *rest = my_tuple",
+    "*a, b = my_tuple",
+    "a = *my_tuple"
+  ],
+  "answer": 1,
+  "explanation": "`a, b, *rest = my_tuple` safely unpacks at least two items and collects the rest in a list."
+},
+{
+  "category": "Python",
+  "question": "Which method creates a true deep copy of a list of lists?",
+  "options": ["copy()", "list()", "deepcopy()", "[:]"],
+  "answer": 2,
+  "explanation": "Use `copy.deepcopy()` to create a deep copy of nested lists."
+},
+{
+  "category": "Python",
+  "question": "In a function, what does *args capture?",
+  "options": ["Keyword arguments", "All arguments", "Positional arguments", "Default arguments"],
+  "answer": 2,
+  "explanation": "*args captures any extra positional arguments passed to a function."
+},
+{
+  "category": "Python",
+  "question": "What is the result of 'a' is 'a' in Python?",
+  "options": [
+    "False, because they're different objects",
+    "True, because they're the same object",
+    "Error",
+    "True, because == is used"
+  ],
+  "answer": 1,
+  "explanation": "Small strings are interned in Python, so 'a' is 'a' returns True due to object identity."
+},
+{
+  "category": "Python",
+  "question": "What keyword is used to read a file line-by-line efficiently?",
+  "options": ["readlines()", "read()", "for line in file", "readall()"],
+  "answer": 2,
+  "explanation": "Iterating with `for line in file` is memory-efficient for large files."
+},
+{
+  "category": "Python",
+  "question": "Which string method splits a string into exactly 2 parts at the first ':'?",
+  "options": ["split(':', 1)", "partition(':')", "splitonce(':')", "cut(':', 1)"],
+  "answer": 1,
+  "explanation": "`partition(':')` splits into exactly three parts: before, separator, and after."
+},
+{
+  "category": "Python",
+  "question": "What is a generator used for in Python?",
+  "options": [
+    "Returning a list",
+    "Returning all values at once",
+    "Yielding values one at a time to save memory",
+    "Random number generation"
+  ],
+  "answer": 2,
+  "explanation": "Generators yield values one by one using `yield`, which is ideal for large datasets."
+},
+{
+  "category": "Python",
+  "question": "Which loop will safely access both keys and values in a dictionary?",
+  "options": [
+    "for k in dict",
+    "for k, v in dict.items()",
+    "for k in dict.values()",
+    "for v in dict.keys()"
+  ],
+  "answer": 1,
+  "explanation": "Using `dict.items()` allows you to loop over both keys and values."
+}
+,
   {
   "category": "Python",
   "question": "What will this code output?\n\nvehicle = 'red car'.split()\ncolor, type = vehicle\nprint(color, type)",
