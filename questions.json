@@ -1,0 +1,327 @@
+[
+  {
+    "category": "Python",
+    "question": "What is the time complexity of dictionary lookup in Python?",
+    "options": [
+      "O(1)",
+      "O(n)",
+      "O(log n)",
+      "O(n\u00b2)"
+    ],
+    "answer": 0,
+    "explanation": "Dictionary lookups in Python are O(1) on average because they use hash tables."
+  },
+  {
+    "category": "Python",
+    "question": "Which Python data structure would you use for a FIFO queue?",
+    "options": [
+      "list",
+      "collections.deque",
+      "set",
+      "dict"
+    ],
+    "answer": 1,
+    "explanation": "collections.deque is optimized for FIFO operations with O(1) append and popleft."
+  },
+  {
+    "category": "Python",
+    "question": "What is the difference between list.append() and list.extend()?",
+    "options": [
+      "No difference",
+      "append adds one item, extend adds multiple",
+      "extend is faster",
+      "append only works with strings"
+    ],
+    "answer": 1,
+    "explanation": "append() adds a single element to the end, extend() adds all elements from an iterable."
+  },
+  {
+    "category": "Python",
+    "question": "In Python, what does the @property decorator do?",
+    "options": [
+      "Makes a method static",
+      "Converts a method to a property",
+      "Improves performance",
+      "Adds type hints"
+    ],
+    "answer": 1,
+    "explanation": "@property allows you to access a method like an attribute, enabling getter/setter functionality."
+  },
+  {
+    "category": "Python",
+    "question": "What is a generator in Python?",
+    "options": [
+      "A function that returns multiple values at once",
+      "A function that yields values one at a time",
+      "A class that generates random numbers",
+      "A module for creating lists"
+    ],
+    "answer": 1,
+    "explanation": "Generators yield values one at a time using the yield keyword, saving memory for large datasets."
+  },
+  {
+    "category": "SQL",
+    "question": "Which JOIN returns all rows from both tables?",
+    "options": [
+      "INNER JOIN",
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "FULL OUTER JOIN"
+    ],
+    "answer": 3,
+    "explanation": "FULL OUTER JOIN returns all rows from both tables, with NULL values where no match exists."
+  },
+  {
+    "category": "SQL",
+    "question": "What SQL statement would you use to add a new column to an existing table?",
+    "options": [
+      "INSERT COLUMN",
+      "ALTER TABLE ADD",
+      "UPDATE TABLE",
+      "CREATE COLUMN"
+    ],
+    "answer": 1,
+    "explanation": "ALTER TABLE table_name ADD column_name datatype; is the correct syntax."
+  },
+  {
+    "category": "SQL",
+    "question": "What is the difference between WHERE and HAVING clauses?",
+    "options": [
+      "No difference",
+      "WHERE filters rows, HAVING filters groups",
+      "HAVING is faster",
+      "WHERE only works with strings"
+    ],
+    "answer": 1,
+    "explanation": "WHERE filters rows before grouping, HAVING filters groups after GROUP BY."
+  },
+  {
+    "category": "SQL",
+    "question": "Which SQL function would you use to get the current date?",
+    "options": [
+      "NOW()",
+      "GETDATE()",
+      "CURRENT_DATE",
+      "All of the above (varies by DBMS)"
+    ],
+    "answer": 3,
+    "explanation": "Different database systems use different functions: MySQL uses NOW(), SQL Server uses GETDATE(), PostgreSQL uses CURRENT_DATE."
+  },
+  {
+    "category": "SQL",
+    "question": "What does the SQL COALESCE function do?",
+    "options": [
+      "Joins tables",
+      "Returns first non-NULL value",
+      "Counts rows",
+      "Sorts data"
+    ],
+    "answer": 1,
+    "explanation": "COALESCE returns the first non-NULL value from a list of expressions."
+  },
+  {
+    "category": "AWS",
+    "question": "What is AWS Lambda?",
+    "options": [
+      "A database service",
+      "A serverless compute service",
+      "A storage service",
+      "A networking service"
+    ],
+    "answer": 1,
+    "explanation": "AWS Lambda is a serverless compute service that runs code in response to events."
+  },
+  {
+    "category": "AWS",
+    "question": "Which AWS service would you use for a managed relational database?",
+    "options": [
+      "S3",
+      "EC2",
+      "RDS",
+      "Lambda"
+    ],
+    "answer": 2,
+    "explanation": "Amazon RDS (Relational Database Service) provides managed relational databases."
+  },
+  {
+    "category": "AWS",
+    "question": "What is the maximum execution time for an AWS Lambda function?",
+    "options": [
+      "5 minutes",
+      "15 minutes",
+      "30 minutes",
+      "60 minutes"
+    ],
+    "answer": 1,
+    "explanation": "AWS Lambda functions can run for a maximum of 15 minutes."
+  },
+  {
+    "category": "AWS",
+    "question": "Which AWS service provides a CDN (Content Delivery Network)?",
+    "options": [
+      "Route 53",
+      "CloudFront",
+      "S3",
+      "EC2"
+    ],
+    "answer": 1,
+    "explanation": "Amazon CloudFront is AWS's content delivery network service."
+  },
+  {
+    "category": "AWS",
+    "question": "What is the purpose of AWS VPC?",
+    "options": [
+      "Virtual Private Cloud for network isolation",
+      "Virtual Processing Computer",
+      "Volume Persistent Cache",
+      "Virtual Platform Console"
+    ],
+    "answer": 0,
+    "explanation": "VPC (Virtual Private Cloud) provides network isolation for your AWS resources."
+  },
+  {
+  "category": "Python",
+  "question": "Complete this list comprehension to get squares of all numbers from 0 to 4:\n\nsquares = [____ for ____]",
+  "options": [
+    "x * x for x in range(5)",
+    "for x in range(5): x * x",
+    "x in range(5) * x",
+    "x * x if range(5)"
+  ],
+  "answer": 0,
+  "explanation": "The correct syntax is: [x * x for x in range(5)]"
+},
+{
+  "category": "Python",
+  "question": "Which Python module allows you to interact with the file system and run shell commands?",
+  "options": [
+    "system",
+    "commands",
+    "os",
+    "subprocess"
+  ],
+  "answer": 2,
+  "explanation": "The 'os' module provides functions for interacting with the operating system."
+},
+{
+  "category": "Python",
+  "question": "Which string method removes leading and trailing whitespace?",
+  "options": [
+    "trim()",
+    "strip()",
+    "clean()",
+    "rstrip()"
+  ],
+  "answer": 1,
+  "explanation": "The 'strip()' method removes whitespace from both ends of a string."
+},
+{
+  "category": "Python",
+  "question": "Complete this socket client code snippet by filling in the blank:\n\ns = socket.socket()\ns.connect((\"localhost\", 8000))\ns.____(\"hello\".encode())",
+  "options": [
+    "send",
+    "write",
+    "emit",
+    "push"
+  ],
+  "answer": 0,
+  "explanation": "Use 'send' to transmit data over a socket in Python."
+},
+{
+  "category": "Python",
+  "question": "What is the correct syntax for a catch-all exception block in Python?",
+  "options": [
+    "except:",
+    "catch all:",
+    "on error:",
+    "handle all:"
+  ],
+  "answer": 0,
+  "explanation": "Use 'except:' to catch all exceptions. This is not recommended for production but fine for quick scripts or learning."
+},
+{
+  "category": "Python",
+  "question": "Write a simple class named Car that stores color and door count. Which option is correct?",
+  "options": [
+    "class Car: def __init__(self, color, doors): self.color = color; self.doors = doors",
+    "Car = class(color, doors): this.color = color; this.doors = doors",
+    "def Car(): color, doors = '', 4",
+    "create Car(color, doors): make fields"
+  ],
+  "answer": 0,
+  "explanation": "Option 1 is the correct Python class syntax using __init__ to define attributes."
+},
+{
+  "category": "Python",
+  "question": "Fill in the blank to define a function named 'greet' that takes one argument:\n\n____ greet(name):\n    print(\"Hello,\", name)",
+  "options": [
+    "def",
+    "func",
+    "function",
+    "define"
+  ],
+  "answer": 0,
+  "explanation": "Functions in Python are defined using the 'def' keyword."
+},
+{
+  "category": "Python",
+  "question": "Which method would you use to convert the string '42' into an integer?",
+  "options": [
+    "to_int('42')",
+    "str2int('42')",
+    "int('42')",
+    "parseInt('42')"
+  ],
+  "answer": 2,
+  "explanation": "The 'int()' function converts a string to an integer in Python."
+},
+{
+  "category": "Python",
+  "question": "What method would you use to split the string 'one,two,three' into a list of values?",
+  "options": [
+    "split(',')",
+    "cut(',')",
+    "explode(',')",
+    "chop(',')"
+  ],
+  "answer": 0,
+  "explanation": "Use the string method 'split' to divide a string into parts using a delimiter."
+},
+{
+  "category": "Python",
+  "question": "Complete this code to import just the 'path' function from the os module:\n\nfrom os import ____",
+  "options": [
+    "get",
+    "path",
+    "os",
+    "folder"
+  ],
+  "answer": 1,
+  "explanation": "The correct syntax is: from os import path"
+},
+{
+  "category": "Python",
+  "question": "What keyword would you use to make a method belong to the class, not the instance?",
+  "options": [
+    "classmethod",
+    "staticmethod",
+    "selfmethod",
+    "instancemethod"
+  ],
+  "answer": 1,
+  "explanation": "@staticmethod marks a method that does not take 'self' and does not access instance data."
+},
+{
+  "category": "Python",
+  "question": "Fill in the blank to open a file named 'data.txt' in read mode:\n\nwith open('data.txt', 'r') as ____:",
+  "options": [
+    "file",
+    "reader",
+    "f",
+    "data"
+  ],
+  "answer": 2,
+  "explanation": "The variable is commonly named 'f', but it can be anything. This is standard Python practice."
+}
+
+]
