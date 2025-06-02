@@ -1,5 +1,62 @@
 [
   {
+  "category": "Python",
+  "question": "What will this code output?\n\nvehicle = 'red car'.split()\ncolor, type = vehicle\nprint(color, type)",
+  "options": ["r e", "red car", "red car", "red car"],
+  "answer": 2,
+  "explanation": "split() creates ['red', 'car'], and unpacking assigns 'red' to color and 'car' to type."
+},
+{
+  "category": "Python",
+  "question": "What does this loop do?\n\nfor item in 'red car'.split():\n    print(item[0])",
+  "options": ["Prints each letter", "Prints 'r' and 'c'", "Throws error", "Prints entire string"],
+  "answer": 1,
+  "explanation": "Each item is a word; item[0] accesses the first character of each word — 'r' and 'c'."
+},
+{
+  "category": "Python",
+  "question": "How should you unpack the result of input.split() to get two variables, color and type?",
+  "options": [
+    "color, type = input.split()",
+    "color = input[0], type = input[1]",
+    "for word in input: color = word[0]",
+    "color = input.split(), type = input.split()"
+  ],
+  "answer": 0,
+  "explanation": "split() returns a list; unpack it directly with two variables like color, type = input.split()."
+},
+{
+  "category": "Python",
+  "question": "What type is returned by this expression?\n\n'blue truck'.split()",
+  "options": ["str", "tuple", "list", "dict"],
+  "answer": 2,
+  "explanation": "split() returns a list of strings based on whitespace by default."
+},
+{
+  "category": "Python",
+  "question": "What is the best way to parse 'green bike' into color and type without using a loop?",
+  "options": [
+    "color, type = 'green bike'",
+    "color, type = 'green bike'.split()",
+    "for c, t in 'green bike': pass",
+    "color = 'green', type = 'bike'"
+  ],
+  "answer": 1,
+  "explanation": "You can unpack the result of .split() into two variables directly without using a loop."
+},
+{
+  "category": "Python",
+  "question": "What mistake does this code make?\n\nfor detail in 'blue van'.split():\n    color = detail[0]\n    type = detail[1]",
+  "options": [
+    "It assigns characters, not full words",
+    "It throws an exception",
+    "It creates a list of words",
+    "It unpacks a tuple"
+  ],
+  "answer": 0,
+  "explanation": "Each detail is a string ('blue', 'van'), so detail[0] is the first character, not the whole word."
+},
+  {
     "category": "Python",
     "question": "What is the time complexity of dictionary lookup in Python?",
     "options": [
