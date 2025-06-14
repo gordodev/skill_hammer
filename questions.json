@@ -1,4 +1,424 @@
 [
+  {
+    "category": "Python",
+    "question": "What does 'split()' with no arguments do on a string?",
+    "options": [
+      "Splits on every character",
+      "Splits on tabs only",
+      "Splits on whitespace and removes empty results",
+      "Throws an error"
+    ],
+    "answer": 2,
+    "explanation": "Calling split() with no arguments splits on any whitespace and removes empty strings."
+  },
+  {
+    "category": "Regex",
+    "question": "What does the string r'\\35=D\\r' likely represent in a FIX log context?",
+    "options": [
+      "A typo",
+      "Regex for tag 35 with value D, ending with carriage return",
+      "JSON syntax error",
+      "Socket address"
+    ],
+    "answer": 1,
+    "explanation": "r'\\35=D\\r' is a raw regex string to match '35=D' followed by a carriage return."
+  },
+  {
+    "category": "Sockets",
+    "question": "Which socket operation is used to wait for incoming connections?",
+    "options": [
+      "connect()",
+      "recv()",
+      "bind()",
+      "listen()"
+    ],
+    "answer": 3,
+    "explanation": "listen() puts the socket into a mode where it waits for incoming connection requests."
+  },
+  {
+    "category": "Sockets",
+    "question": "What does the 'bind()' function do in socket programming?",
+    "options": [
+      "Starts listening on a port",
+      "Connects to a remote IP",
+      "Associates socket with an IP/port",
+      "Closes the socket"
+    ],
+    "answer": 2,
+    "explanation": "bind() assigns an IP address and port number to a socket."
+  },
+  {
+    "category": "Sockets",
+    "question": "Which function sends data from a client socket?",
+    "options": [
+      "recv()",
+      "connect()",
+      "send()",
+      "accept()"
+    ],
+    "answer": 2,
+    "explanation": "send() transmits data to a connected socket."
+  },
+  {
+    "category": "Python - Collections",
+    "question": "What is a key feature of collections.defaultdict?",
+    "options": [
+      "It sorts dictionary keys",
+      "It raises an error when key is missing",
+      "It sets a default value for missing keys",
+      "It hashes values automatically"
+    ],
+    "answer": 2,
+    "explanation": "defaultdict allows automatic assignment of default values for missing keys."
+  },
+  {
+    "category": "Python - Collections",
+    "question": "Which method converts a list of tuples into a Counter object?",
+    "options": [
+      "Counter.from_dict()",
+      "Counter.update()",
+      "Counter(dict.items())",
+      "Counter(list_of_tuples)"
+    ],
+    "answer": 3,
+    "explanation": "You can directly pass a list of tuples to Counter to count values."
+  },
+  {
+    "category": "Python - Collections",
+    "question": "Which structure in collections maintains the order of insertions?",
+    "options": [
+      "set",
+      "dict",
+      "OrderedDict",
+      "defaultdict"
+    ],
+    "answer": 2,
+    "explanation": "OrderedDict remembers the order entries were added."
+  },
+  {
+    "category": "Python - Collections",
+    "question": "Which object is best for counting frequency of log entries?",
+    "options": [
+      "Counter",
+      "defaultdict",
+      "set",
+      "namedtuple"
+    ],
+    "answer": 0,
+    "explanation": "Counter is designed to count items efficiently."
+  },
+  {
+    "category": "Python - Collections",
+    "question": "Which type can replace switch/case behavior in Python?",
+    "options": [
+      "Counter",
+      "defaultdict",
+      "namedtuple",
+      "deque"
+    ],
+    "answer": 1,
+    "explanation": "defaultdict can simulate switch/case behavior by assigning default actions."
+  },
+  {
+    "category": "DevOps",
+    "question": "Which tool is commonly used for log aggregation in SRE roles?",
+    "options": [
+      "Logstash",
+      "Curl",
+      "Crontab",
+      "Docker"
+    ],
+    "answer": 0,
+    "explanation": "Logstash is part of the ELK stack used for parsing and aggregating logs."
+  },
+  {
+    "category": "DevOps",
+    "question": "Which library allows scheduling Python jobs like cron?",
+    "options": [
+      "datetime",
+      "time",
+      "schedule",
+      "shutil"
+    ],
+    "answer": 2,
+    "explanation": "The 'schedule' library allows human-friendly job scheduling in Python."
+  },
+  {
+    "category": "DevOps",
+    "question": "Which Python library helps safely parse and manipulate YAML?",
+    "options": [
+      "pytoml",
+      "pyyaml",
+      "json",
+      "xml"
+    ],
+    "answer": 1,
+    "explanation": "pyyaml is the go-to library for parsing YAML files in Python."
+  },
+  {
+    "category": "DevOps",
+    "question": "Which Python library helps make SSH connections to remote servers?",
+    "options": [
+      "paramiko",
+      "pycurl",
+      "fabric",
+      "os"
+    ],
+    "answer": 0,
+    "explanation": "Paramiko is a Python implementation of SSH for remote command execution."
+  },
+  {
+    "category": "DevOps",
+    "question": "Which Python library is commonly used for working with .env config files?",
+    "options": [
+      "dotenv",
+      "envlib",
+      "configparser",
+      "settings"
+    ],
+    "answer": 0,
+    "explanation": "python-dotenv loads environment variables from .env files."
+  },
+  {
+    "category": "Python - String",
+    "question": "What does str.zfill(5) do to '42'?",
+    "options": [
+      "'00042'",
+      "'42000'",
+      "'42.000'",
+      "'  42'"
+    ],
+    "answer": 0,
+    "explanation": "zfill pads the string with leading zeros to reach the desired length."
+  },
+  {
+    "category": "Python - String",
+    "question": "What does str.partition(':') return for 'key:value'?",
+    "options": [
+      "['key', ':', 'value']",
+      "('key', ':', 'value')",
+      "('key:value')",
+      "('key:value',)"
+    ],
+    "answer": 1,
+    "explanation": "partition returns a tuple with (before, separator, after)."
+  },
+  {
+    "category": "Python - String",
+    "question": "What does str.isdigit() return for '42.0'?",
+    "options": [
+      "True",
+      "False",
+      "Error",
+      "None"
+    ],
+    "answer": 1,
+    "explanation": "isdigit() returns False because '42.0' contains a decimal."
+  },
+  {
+    "category": "Python - String",
+    "question": "What does str.swapcase() do?",
+    "options": [
+      "Swaps the string with another",
+      "Converts to title case",
+      "Switches uppercase to lowercase and vice versa",
+      "Strips whitespace"
+    ],
+    "answer": 2,
+    "explanation": "swapcase() inverts the case of each character in the string."
+  },
+  {
+    "category": "Python - String",
+    "question": "What does str.center(10, '*') do to 'hi'?",
+    "options": [
+      "'****hi****'",
+      "'***hi****'",
+      "'**hi****'",
+      "'hi*******'"
+    ],
+    "answer": 1,
+    "explanation": "center pads both sides of the string to center it in a field of given width."
+  },
+  {
+    "category": "File I/O",
+    "question": "What does 'seek(0)' do in a file object?",
+    "options": [
+      "Saves file state",
+      "Moves pointer to end of file",
+      "Moves pointer to beginning of file",
+      "Clears file contents"
+    ],
+    "answer": 2,
+    "explanation": "seek(0) resets the file pointer to the beginning of the file."
+  },
+  {
+    "category": "File I/O",
+    "question": "What does 'tell()' do in a file?",
+    "options": [
+      "Tells you if file is binary",
+      "Returns current file pointer location",
+      "Returns file name",
+      "Closes the file"
+    ],
+    "answer": 1,
+    "explanation": "tell() returns the current position of the file pointer."
+  },
+  {
+    "category": "File I/O",
+    "question": "What does 'truncate(0)' do?",
+    "options": [
+      "Clears the file contents",
+      "Deletes the file",
+      "Appends data to file",
+      "Reads first line only"
+    ],
+    "answer": 0,
+    "explanation": "truncate(0) cuts the file down to 0 bytes, clearing contents."
+  },
+  {
+    "category": "File I/O",
+    "question": "Which file mode allows appending without overwriting?",
+    "options": [
+      "'r'",
+      "'a'",
+      "'w'",
+      "'x'"
+    ],
+    "answer": 1,
+    "explanation": "Mode 'a' opens the file for appending; it does not erase existing content."
+  },
+  {
+    "category": "File I/O",
+    "question": "What does 'flush()' do on a file object?",
+    "options": [
+      "Saves file name",
+      "Writes buffer to disk immediately",
+      "Deletes temp files",
+      "Resets pointer to start"
+    ],
+    "answer": 1,
+    "explanation": "flush() forces the OS to write any buffered output to disk."
+  },
+{
+    "category": "SQL",
+    "question": "How do you calculate the percentage of an order that has been filled?",
+    "options": [
+      "SUM(filled_qty) / COUNT(*)",
+      "SUM(filled_qty) / SUM(quantity) * 100",
+      "COUNT(filled_qty) / SUM(quantity)",
+      "AVG(filled_qty / quantity)"
+    ],
+    "answer": 1,
+    "explanation": "To calculate fill rate, divide total filled quantity by total order quantity, then multiply by 100 for percentage."
+  },
+  {
+    "category": "SQL",
+    "question": "Which query finds orders that have not been executed?",
+    "options": [
+      "SELECT * FROM executions WHERE order_id IS NULL",
+      "SELECT * FROM orders WHERE status = 'CANCELED'",
+      "SELECT o.order_id FROM orders o LEFT JOIN executions e ON o.order_id = e.order_id WHERE e.order_id IS NULL",
+      "SELECT * FROM orders JOIN executions ON orders.order_id = executions.order_id"
+    ],
+    "answer": 2,
+    "explanation": "A LEFT JOIN followed by a NULL check identifies orders with no matching executions."
+  },
+  {
+    "category": "SQL",
+    "question": "How do you find the top 3 clients by total trading volume in the last 30 days?",
+    "options": [
+      "GROUP BY client_id ORDER BY COUNT(*) DESC LIMIT 3",
+      "GROUP BY client_id ORDER BY SUM(price * quantity) DESC LIMIT 3",
+      "GROUP BY client_id ORDER BY SUM(price + quantity) DESC LIMIT 3",
+      "ORDER BY total_volume DESC GROUP BY client_id LIMIT 3"
+    ],
+    "answer": 1,
+    "explanation": "Use SUM(price * quantity) to calculate volume, then ORDER BY DESC and LIMIT 3."
+  },
+  {
+    "category": "SQL",
+    "question": "How do you find duplicate order IDs in a table?",
+    "options": [
+      "SELECT order_id FROM orders WHERE COUNT(*) > 1",
+      "SELECT DISTINCT order_id FROM orders",
+      "SELECT order_id, COUNT(*) FROM orders GROUP BY order_id HAVING COUNT(*) > 1",
+      "SELECT * FROM orders GROUP BY order_id HAVING COUNT(order_id) > 1"
+    ],
+    "answer": 2,
+    "explanation": "GROUP BY with HAVING COUNT(*) > 1 finds duplicates."
+  },
+  {
+    "category": "SQL",
+    "question": "How do you calculate the dollar value of each client’s trades today and their most used destination?",
+    "options": [
+      "GROUP BY client_id ORDER BY SUM(quantity + price)",
+      "GROUP BY destination ORDER BY MAX(quantity * price)",
+      "GROUP BY client_id, destination ORDER BY SUM(quantity * price) DESC",
+      "GROUP BY client_id, destination ORDER BY SUM(price) DESC"
+    ],
+    "answer": 2,
+    "explanation": "Grouping by both client and destination, then summing quantity * price, shows value per flow path."
+  },
+  {
+    "category": "SQL",
+    "question": "Which query helps detect partially filled orders?",
+    "options": [
+      "JOIN orders ON executions WHERE filled_qty = 0",
+      "SELECT o.order_id FROM orders o JOIN executions e ON o.order_id = e.order_id GROUP BY o.order_id, o.quantity HAVING SUM(e.executed_qty) < o.quantity",
+      "SELECT * FROM executions WHERE status = 'PARTIAL'",
+      "SELECT * FROM orders WHERE quantity = 0"
+    ],
+    "answer": 1,
+    "explanation": "Compare SUM of executed_qty to original order quantity to find partial fills."
+  },
+  {
+    "category": "SQL",
+    "question": "What metric best describes price slippage?",
+    "options": [
+      "AVG(execution_price - price)",
+      "AVG(price / execution_price)",
+      "AVG(ABS(execution_price - price) / price)",
+      "MAX(execution_price - price)"
+    ],
+    "answer": 2,
+    "explanation": "Price slippage is the average absolute difference between execution and order price, relative to order price."
+  },
+  {
+    "category": "SQL",
+    "question": "How can you measure average execution latency by symbol?",
+    "options": [
+      "GROUP BY execution_time - order_time",
+      "AVG(order_time - execution_time)",
+      "GROUP BY symbol, AVG(DATEDIFF(millisecond, order_time, execution_time))",
+      "ORDER BY execution_time - order_time"
+    ],
+    "answer": 2,
+    "explanation": "You use AVG and DATEDIFF in milliseconds grouped by symbol to find latency."
+  },
+  {
+    "category": "SQL",
+    "question": "Which query shows new orders older than 5 minutes with no executions?",
+    "options": [
+      "SELECT * FROM orders WHERE status = 'NEW' AND DATEDIFF(MINUTE, order_time, GETDATE()) > 5",
+      "SELECT o.order_id FROM orders o LEFT JOIN executions e ON o.order_id = e.order_id WHERE o.status = 'NEW' AND e.order_id IS NULL AND DATEDIFF(MINUTE, o.order_time, GETDATE()) > 5",
+      "SELECT * FROM executions WHERE status = 'PENDING'",
+      "SELECT * FROM orders WHERE order_time IS NULL"
+    ],
+    "answer": 1,
+    "explanation": "Use LEFT JOIN and DATEDIFF to find stuck new orders with no matching executions older than 5 minutes."
+  },
+  {
+    "category": "SQL",
+    "question": "How can you list clients with no orders in the last 30 days?",
+    "options": [
+      "SELECT client_id FROM accounts WHERE order_date < NOW() - 30",
+      "SELECT * FROM orders WHERE client_id NOT IN (SELECT client_id FROM accounts)",
+      "SELECT a.client_id FROM accounts a LEFT JOIN orders o ON a.client_id = o.client_id AND o.order_date >= DATEADD(day, -30, GETDATE()) WHERE o.order_id IS NULL",
+      "SELECT * FROM accounts WHERE order_id IS NULL"
+    ],
+    "answer": 2,
+    "explanation": "LEFT JOIN and NULL filter finds clients with no orders in the last 30 days."
+  },
 {
   "category": "Python",
   "question": "Which Python data structure allows duplicate values and preserves order?",
