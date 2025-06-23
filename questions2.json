@@ -1,5 +1,135 @@
 {
   "questions": [
+  {
+    "category": "SQL Aggregation",
+    "question": "How do you sum total fills grouped by symbol? (Think: GROUP BY + SUM)",
+    "setup_code": "# Table trades(trade_id INT, symbol VARCHAR, fill_quantity INT)\n",
+    "options": [
+      "SELECT symbol, SUM(fill_quantity) AS total_fills FROM trades GROUP BY symbol;",
+      "SELECT symbol, SUM(fill_quantity) AS total_fills FROM trades;",
+      "SELECT SUM(fill_quantity) AS total_fills FROM trades GROUP BY symbol;",
+      "SELECT symbol, COUNT(fill_quantity) AS total_fills FROM trades GROUP BY symbol;"
+    ],
+    "answer": 0,
+    "explanation": "You need SUM(fill_quantity) and then GROUP BY symbol to get the total fills per symbol."
+  },
+  {
+    "category": "SQL Filtering",
+    "question": "How would you query executions for a strategy over the last week? (Hint: time-based filter with INTERVAL)",
+    "setup_code": "# Table executions(exec_id INT, strategy VARCHAR, exec_time TIMESTAMP)\n",
+    "options": [
+      "SELECT * FROM executions WHERE strategy = 'XYZ' AND exec_time >= CURRENT_DATE - INTERVAL '7 DAY';",
+      "SELECT * FROM executions WHERE strategy = 'XYZ' AND exec_time > NOW() - INTERVAL '7 DAYS';",
+      "SELECT * FROM executions WHERE exec_time >= DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND strategy = 'XYZ';",
+      "SELECT * FROM executions WHERE strategy = 'XYZ' AND exec_time BETWEEN CURRENT_DATE - INTERVAL '7 DAY' AND CURRENT_DATE;"
+    ],
+    "answer": 0,
+    "explanation": "Use CURRENT_DATE - INTERVAL '7 DAY' to filter rows from the last 7 days, combined with the strategy condition."
+  },
+  {
+    "category": "SQL Joins",
+    "question": "Explain INNER JOIN vs LEFT JOIN using trades and fills. (Think: matching vs unmatched data)",
+    "setup_code": "# Tables: trades(trade_id INT, ...) and fills(fill_id INT, trade_id INT, ...)\n",
+    "options": [
+      "INNER JOIN returns only matching rows; LEFT JOIN returns all from the left table even if no match.",
+      "INNER JOIN returns all left rows regardless of matches; LEFT JOIN returns only matching rows.",
+      "INNER JOIN includes unmatched rows from both tables; LEFT JOIN excludes unmatched rows from the left table.",
+      "INNER JOIN returns unmatched rows only; LEFT JOIN returns all rows but without duplicates."
+    ],
+    "answer": 0,
+    "explanation": "INNER JOIN keeps only matching rows, while LEFT JOIN keeps all rows from the left table and fills with NULL when there’s no match."
+  },
+  {
+    "category": "SQL Aggregation",
+    "question": "Write a query to calculate daily P&L per trader. (Hint: use CASE WHEN for side logic)",
+    "setup_code": "# Table trades(trade_date DATE, trader_id INT, side VARCHAR, price DECIMAL, qty INT)\n",
+    "options": [
+      "SELECT trade_date, trader_id, SUM(CASE WHEN side = 'SELL' THEN price * qty WHEN side = 'BUY' THEN -price * qty ELSE 0 END) AS pnl FROM trades GROUP BY trade_date, trader_id;",
+      "SELECT trade_date, trader_id, SUM(price * qty) AS pnl FROM trades GROUP BY trade_date, trader_id;",
+      "SELECT trade_date, trader_id, SUM(CASE WHEN side = 'BUY' THEN price * qty WHEN side = 'SELL' THEN price * qty END) AS pnl FROM trades GROUP BY trade_date, trader_id;",
+      "SELECT trade_date, trader_id, SUM(CASE WHEN side = 'SELL' THEN -price * qty WHEN side = 'BUY' THEN price * qty ELSE 0 END) AS pnl FROM trades GROUP BY trade_date, trader_id;"
+    ],
+    "answer": 0,
+    "explanation": "You need a CASE WHEN that makes SELL positive and BUY negative, then SUM and GROUP BY trade_date and trader_id."
+  },
+  {
+    "category": "SQL Data Quality",
+    "question": "How do you detect duplicate trade IDs? (Clue: GROUP BY and HAVING COUNT > 1)",
+    "setup_code": "# Table trades(trade_id INT, ...)\n",
+    "options": [
+      "SELECT trade_id FROM trades GROUP BY trade_id HAVING COUNT(*) > 1;",
+      "SELECT trade_id FROM trades WHERE COUNT(trade_id) > 1;",
+      "SELECT trade_id FROM trades HAVING COUNT(*) > 1;",
+      "SELECT trade_id, COUNT(*) FROM trades GROUP BY trade_id WHERE COUNT(*) > 1;"
+    ],
+    "answer": 0,
+    "explanation": "Use GROUP BY trade_id and then HAVING COUNT(*) > 1 to filter only those trade_ids that appear more than once."
+  },
+  {
+    "category": "SQL Joins",
+    "question": "Write a query to find clients with zero trades. (Hint: LEFT JOIN with IS NULL)",
+    "setup_code": "# Tables: clients(client_id INT), trades(trade_id INT, client_id INT)\n",
+    "options": [
+      "SELECT c.client_id FROM clients c LEFT JOIN trades t ON c.client_id = t.client_id WHERE t.trade_id IS NULL;",
+      "SELECT client_id FROM clients WHERE client_id NOT IN (SELECT client_id FROM trades);",
+      "SELECT c.client_id FROM trades t RIGHT JOIN clients c ON t.client_id = c.client_id WHERE t.trade_id IS NULL;",
+      "SELECT c.client_id FROM clients c JOIN trades t ON c.client_id = t.client_id WHERE t.trade_id = NULL;"
+    ],
+    "answer": 0,
+    "explanation": "A LEFT JOIN keeps all clients and NULLs for no match; filtering WHERE t.trade_id IS NULL returns only those with no trades."
+  },
+  {
+    "category": "SQL Filtering",
+    "question": "Explain the difference between WHERE and HAVING. (Think: before vs after aggregation)",
+    "setup_code": "# Table trades(symbol VARCHAR, qty INT, ...)\n",
+    "options": [
+      "WHERE filters rows before grouping; HAVING filters groups after aggregation.",
+      "WHERE filters groups after grouping; HAVING filters rows before grouping.",
+      "WHERE and HAVING are interchangeable when filtering aggregated data.",
+      "WHERE can be used only with GROUP BY; HAVING only without GROUP BY."
+    ],
+    "answer": 0,
+    "explanation": "WHERE applies to individual rows before GROUP BY; HAVING applies to the grouped results after aggregation."
+  },
+  {
+    "category": "SQL Set Operations",
+    "question": "What's the difference between UNION and UNION ALL in trade reporting? (Clue: duplicates vs performance)",
+    "setup_code": "# Tables: feed1(...), feed2(...)\n",
+    "options": [
+      "UNION removes duplicates and is slower; UNION ALL keeps all rows and is faster.",
+      "UNION ALL removes duplicates and is slower; UNION keeps all rows and is faster.",
+      "UNION orders results; UNION ALL does not maintain order.",
+      "Both remove duplicates but UNION ALL uses more memory."
+    ],
+    "answer": 0,
+    "explanation": "UNION deduplicates which adds overhead; UNION ALL simply concatenates both results without checking for duplicates."
+  },
+  {
+    "category": "SQL Performance",
+    "question": "What kind of index would you use for a high-volume trade table queried by symbol and time? (Clue: composite index)",
+    "setup_code": "# Table trades(symbol VARCHAR, trade_time TIMESTAMP, ...)\n",
+    "options": [
+      "CREATE INDEX idx_symbol_time ON trades(symbol, trade_time);",
+      "CREATE INDEX idx_trade_time ON trades(trade_time);",
+      "CREATE INDEX idx_symbol ON trades(symbol);",
+      "CREATE UNIQUE INDEX idx_symbol_time ON trades(symbol, trade_time);"
+    ],
+    "answer": 0,
+    "explanation": "A composite index on (symbol, trade_time) speeds up queries filtering by both columns together."
+  },
+  {
+    "category": "SQL Aggregation",
+    "question": "Write a query to compute net position using CASE WHEN. (Hint: BUY adds, SELL subtracts)",
+    "setup_code": "# Table trades(symbol VARCHAR, side VARCHAR, quantity INT)\n",
+    "options": [
+      "SELECT symbol, SUM(CASE WHEN side = 'BUY' THEN quantity WHEN side = 'SELL' THEN -quantity ELSE 0 END) AS net_position FROM trades GROUP BY symbol;",
+      "SELECT symbol, SUM(quantity) AS net_position FROM trades GROUP BY symbol;",
+      "SELECT symbol, SUM(CASE WHEN side = 'SELL' THEN quantity WHEN side = 'BUY' THEN -quantity END) AS net_position FROM trades GROUP BY symbol;",
+      "SELECT symbol, SUM(CASE side WHEN 'BUY' THEN quantity WHEN 'SELL' THEN -quantity END) AS net_position FROM trades GROUP BY symbol;"
+    ],
+    "answer": 0,
+    "explanation": "Use CASE WHEN to add BUY quantities and subtract SELL quantities, then GROUP BY symbol to aggregate."
+  },
     {
       "category": "FIX Parsing - File I/O",
       "question": "Open the file 'fix.log' in read mode using a context manager. Assign to variable 'f'.",
