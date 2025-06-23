@@ -1,5 +1,291 @@
 {
   "questions": [
+ {
+    "category": "UNIX Commands",
+    "question": "Create a symbolic link named current_cfg pointing to /etc/eqd_frontend.conf",
+    "setup_code": "",
+    "options": [
+      "ln -s /etc/eqd_frontend.conf current_cfg",
+      "ln /etc/eqd_frontend.conf current_cfg",
+      "cp -s /etc/eqd_frontend.conf current_cfg",
+      "ln -f /etc/eqd_frontend.conf current_cfg"
+    ],
+    "answer": 0,
+    "explanation": "ln -s source link_name creates a symbolic (soft) link."
+  },
+  {
+    "category": "UNIX Commands",
+    "question": "Extract the 3rd field (symbol) from a pipe-delimited trade log.",
+    "setup_code": "",
+    "options": [
+      "cut -d '|' -f 3 trades.log",
+      "cut -d ',' -f 3 trades.log",
+      "awk -F '|' '{print $2}' trades.log",
+      "sed 's/|/ /g' trades.log"
+    ],
+    "answer": 0,
+    "explanation": "cut -d '|' -f 3 uses '|' as delimiter and prints the third field."
+  },
+  {
+    "category": "UNIX Commands",
+    "question": "Sum the 5th column (qty) in space-delimited orders.txt using awk.",
+    "setup_code": "",
+    "options": [
+      "awk '{sum += $5} END {print sum}' orders.txt",
+      "awk -F ',' '{sum += $5} END {print sum}' orders.txt",
+      "sed 's/ /,/g' orders.txt | awk -F ',' '{print $5}'",
+      "cut -d ' ' -f 5 orders.txt | wc -l"
+    ],
+    "answer": 0,
+    "explanation": "awk '{sum += $5} END {print sum}' adds field 5 of each line and prints total."
+  },
+  {
+    "category": "UNIX Commands",
+    "question": "Show all running processes with 'eqd_fe' in their command using ps.",
+    "setup_code": "",
+    "options": [
+      "ps aux | grep eqd_fe",
+      "ps -ef eqd_fe",
+      "ps aux eqd_fe",
+      "top -p eqd_fe"
+    ],
+    "answer": 0,
+    "explanation": "ps aux lists all processes; piping to grep filters lines containing 'eqd_fe'."
+  },
+  {
+    "category": "UNIX Commands",
+    "question": "Search application.log for lines containing ERROR or WARN using egrep.",
+    "setup_code": "",
+    "options": [
+      "egrep 'ERROR|WARN' application.log",
+      "grep 'ERROR|WARN' application.log",
+      "grep -E 'ERROR AND WARN' application.log",
+      "sed -n '/ERROR|WARN/p' application.log"
+    ],
+    "answer": 0,
+    "explanation": "egrep 'ERROR|WARN' uses extended regex to match either term."
+  },
+  {
+    "category": "Corporate Actions",
+    "question": "What happens to share count and price in a 3-for-1 stock split?",
+    "setup_code": "",
+    "options": [
+      "Share count triples; price is divided by 3",
+      "Share count divided by 3; price triples",
+      "No change in count or price",
+      "Company merges three tickers into one"
+    ],
+    "answer": 0,
+    "explanation": "A forward split increases shares (×3) and proportionally reduces price (÷3)."
+  },
+  {
+    "category": "Corporate Actions",
+    "question": "In a merger, which corporate action typically occurs?",
+    "setup_code": "",
+    "options": [
+      "Two companies combine into one single equity",
+      "Outstanding shares are split 2-for-1",
+      "Company spins off a division as a new ticker",
+      "Board declares a cash dividend"
+    ],
+    "answer": 0,
+    "explanation": "A merger unites two firms so their equities combine under one entity."
+  },
+  {
+    "category": "Corporate Actions SQL",
+    "question": "Find upcoming stock splits in corporate_actions table.",
+    "setup_code": "# Table corporate_actions(action_id INT, action_type VARCHAR, symbol VARCHAR, effective_date DATE)\n",
+    "options": [
+      "SELECT * FROM corporate_actions WHERE action_type = 'SPLIT' AND effective_date > CURRENT_DATE;",
+      "SELECT * FROM corporate_actions WHERE action_type = 'MERGER' AND effective_date > CURRENT_DATE;",
+      "SELECT * FROM corporate_actions WHERE action_type = 'SPLIT' AND effective_date < CURRENT_DATE;",
+      "SELECT * FROM corporate_actions WHERE symbol = 'SPLIT' AND effective_date > CURRENT_DATE;"
+    ],
+    "answer": 0,
+    "explanation": "Filter action_type='SPLIT' and effective_date in the future."
+  },
+  {
+    "category": "Trading Session Hours",
+    "question": "What are the regular US equity market hours (EST)?",
+    "setup_code": "",
+    "options": [
+      "09:30–16:00",
+      "08:00–15:00",
+      "10:00–17:00",
+      "07:00–14:00"
+    ],
+    "answer": 0,
+    "explanation": "NYSE/NASDAQ regular trading runs from 9:30 AM to 4:00 PM Eastern."
+  },
+  {
+    "category": "SQL Support Query",
+    "question": "Find trades outside normal session hours.",
+    "setup_code": "# Table trades(trade_id INT, trade_time TIMESTAMP)\n",
+    "options": [
+      "SELECT * FROM trades WHERE trade_time::time < '09:30' OR trade_time::time > '16:00';",
+      "SELECT * FROM trades WHERE trade_time < CURRENT_DATE + INTERVAL '9:30';",
+      "SELECT * FROM trades WHERE EXTRACT(HOUR FROM trade_time) BETWEEN 9 AND 16;",
+      "SELECT * FROM trades WHERE trade_time::time BETWEEN '09:30' AND '16:00';"
+    ],
+    "answer": 0,
+    "explanation": "Cast TIMESTAMP to time and filter outside the bounds of 09:30–16:00."
+  }, 
+{
+    "category": "SQL Support Query",
+    "question": "Find all equity derivative trades that have been in PENDING status for more than 10 minutes.",
+    "setup_code": "# Table trades(trade_id INT, status VARCHAR, trade_time TIMESTAMP)\n",
+    "options": [
+      "SELECT * FROM trades WHERE status = 'PENDING' AND trade_time <= NOW() - INTERVAL '10 MINUTE';",
+      "SELECT * FROM trades WHERE status = 'PENDING' AND trade_time >= NOW() - INTERVAL '10 MINUTE';",
+      "SELECT * FROM trades WHERE status = 'PENDING' AND trade_time < CURRENT_DATE - INTERVAL '10 MINUTE';",
+      "SELECT * FROM trades WHERE status = 'PENDING' AND trade_time BETWEEN NOW() - INTERVAL '10 MINUTES' AND NOW();"
+    ],
+    "answer": 0,
+    "explanation": "Filter rows where status is PENDING and trade_time is at least 10 minutes in the past using NOW() - INTERVAL '10 MINUTE'."
+  },
+  {
+    "category": "SQL Support Query",
+    "question": "Identify trades that have no fills recorded.",
+    "setup_code": "# Tables: trades(trade_id INT), fills(fill_id INT, trade_id INT)\n",
+    "options": [
+      "SELECT t.trade_id FROM trades t LEFT JOIN fills f ON t.trade_id = f.trade_id WHERE f.fill_id IS NULL;",
+      "SELECT trade_id FROM trades WHERE fill_id IS NULL;",
+      "SELECT trade_id FROM fills WHERE trade_id NOT IN (SELECT trade_id FROM trades);",
+      "SELECT t.trade_id FROM trades t INNER JOIN fills f ON t.trade_id = f.trade_id WHERE f.fill_id IS NULL;"
+    ],
+    "answer": 0,
+    "explanation": "A LEFT JOIN keeps all trades; filtering WHERE f.fill_id IS NULL returns only those without any fills."
+  },
+  {
+    "category": "SQL Support Query",
+    "question": "Calculate total notional exposure per symbol for today.",
+    "setup_code": "# Table trades(symbol VARCHAR, qty INT, price DECIMAL, side VARCHAR, trade_date DATE)\n",
+    "options": [
+      "SELECT symbol, SUM(qty * price) AS notional FROM trades WHERE trade_date = CURRENT_DATE GROUP BY symbol;",
+      "SELECT symbol, SUM(qty + price) AS notional FROM trades WHERE trade_date = NOW() GROUP BY symbol;",
+      "SELECT symbol, SUM(price) AS notional FROM trades WHERE trade_date = CURRENT_DATE GROUP BY symbol;",
+      "SELECT symbol, SUM(qty * price) FROM trades GROUP BY symbol;"
+    ],
+    "answer": 0,
+    "explanation": "Multiply qty by price, filter for today via trade_date = CURRENT_DATE, then GROUP BY symbol."
+  },
+  {
+    "category": "SQL Support Query",
+    "question": "List the top 5 traders by number of trades executed today.",
+    "setup_code": "# Table trades(trader_id INT, trade_id INT, trade_date DATE)\n",
+    "options": [
+      "SELECT trader_id, COUNT(*) AS cnt FROM trades WHERE trade_date = CURRENT_DATE GROUP BY trader_id ORDER BY cnt DESC LIMIT 5;",
+      "SELECT trader_id, COUNT(*) FROM trades GROUP BY trader_id ORDER BY COUNT(*) DESC LIMIT 5;",
+      "SELECT trader_id, COUNT(*) AS cnt FROM trades WHERE trade_date = NOW() GROUP BY trader_id ORDER BY cnt DESC LIMIT 5;",
+      "SELECT trader_id, COUNT(trade_id) FROM trades WHERE trade_date = CURRENT_DATE;"
+    ],
+    "answer": 0,
+    "explanation": "Filter for today, GROUP BY trader_id, ORDER BY count descending and LIMIT 5."
+  },
+  {
+    "category": "SQL Support Query",
+    "question": "Find all position records where mtm value is NULL.",
+    "setup_code": "# Table positions(position_id INT, instrument VARCHAR, mtm DECIMAL)\n",
+    "options": [
+      "SELECT * FROM positions WHERE mtm IS NULL;",
+      "SELECT * FROM positions WHERE mtm = 0;",
+      "SELECT * FROM positions WHERE mtm = 'NULL';",
+      "SELECT * FROM positions WHERE mtm != mtm;"
+    ],
+    "answer": 0,
+    "explanation": "Use IS NULL to find rows where the mtm column has no value."
+  },
+  {
+    "category": "SQL Support Query",
+    "question": "Show all event_log entries for trade_id = 123 in chronological order.",
+    "setup_code": "# Table event_log(event_id INT, trade_id INT, event_time TIMESTAMP, message VARCHAR)\n",
+    "options": [
+      "SELECT * FROM event_log WHERE trade_id = 123 ORDER BY event_time ASC;",
+      "SELECT * FROM event_log WHERE trade_id = 123 ORDER BY event_id DESC;",
+      "SELECT * FROM event_log ORDER BY event_time WHERE trade_id = 123;",
+      "SELECT * FROM event_log WHERE trade_id = 123;"
+    ],
+    "answer": 0,
+    "explanation": "Filter by trade_id and ORDER BY event_time ASC to list events oldest first."
+  },
+  {
+    "category": "SQL Support Query",
+    "question": "Compute average time (in seconds) between order submit and fill.",
+    "setup_code": "# Table orders(order_id INT, submit_time TIMESTAMP);\n# Table fills(fill_id INT, order_id INT, fill_time TIMESTAMP)\n",
+    "options": [
+      "SELECT AVG(EXTRACT(EPOCH FROM (f.fill_time - o.submit_time))) AS avg_latency FROM orders o JOIN fills f ON o.order_id = f.order_id;",
+      "SELECT AVG(f.fill_time - o.submit_time) FROM orders o JOIN fills f ON o.order_id = f.order_id;",
+      "SELECT AVG(f.fill_time) - AVG(o.submit_time) FROM orders o JOIN fills f ON o.order_id = f.order_id;",
+      "SELECT AVG((f.fill_time - o.submit_time)/1000) FROM orders o JOIN fills f ON o.order_id = f.order_id;"
+    ],
+    "answer": 0,
+    "explanation": "Use EXTRACT(EPOCH FROM (fill_time - submit_time)) to get seconds, then AVG over joined rows."
+  },
+  {
+    "category": "SQL Support Query",
+    "question": "Find symbols in trades that aren’t defined in instrument_master.",
+    "setup_code": "# Tables: trades(symbol VARCHAR), instrument_master(symbol VARCHAR)\n",
+    "options": [
+      "SELECT DISTINCT t.symbol FROM trades t LEFT JOIN instrument_master m ON t.symbol = m.symbol WHERE m.symbol IS NULL;",
+      "SELECT symbol FROM instrument_master WHERE symbol NOT IN (SELECT symbol FROM trades);",
+      "SELECT t.symbol FROM trades t INNER JOIN instrument_master m ON t.symbol != m.symbol;",
+      "SELECT t.symbol FROM trades t WHERE t.symbol NOT IN (SELECT symbol FROM instrument_master);"
+    ],
+    "answer": 0,
+    "explanation": "LEFT JOIN and IS NULL finds trades.symbol values missing from the master list."
+  },
+  {
+    "category": "Equity Derivatives Fundamentals",
+    "question": "What is the payoff at expiration for a long call option?",
+    "setup_code": "",
+    "options": [
+      "MAX(0, S_T - K)",
+      "MAX(0, K - S_T)",
+      "S_T - K regardless of sign",
+      "K - S_T regardless of sign"
+    ],
+    "answer": 0,
+    "explanation": "Long call payoff = max(0, underlying price at expiry minus strike)."
+  },
+  {
+    "category": "Equity Derivatives Fundamentals",
+    "question": "Define delta in the context of option Greeks.",
+    "setup_code": "",
+    "options": [
+      "Rate of change of option price with respect to underlying price",
+      "Rate of change of option price with respect to volatility",
+      "Rate of change of option price with respect to time",
+      "Rate of change of option price with respect to interest rates"
+    ],
+    "answer": 0,
+    "explanation": "Delta measures sensitivity of option price to a small change in the underlying asset’s price."
+  },
+  {
+    "category": "Equity Derivatives Fundamentals",
+    "question": "What does 'ATM' mean for an option?",
+    "setup_code": "",
+    "options": [
+      "Underlying price equals strike price",
+      "Option is trading above market",
+      "Option is expiring today",
+      "Option has no time value"
+    ],
+    "answer": 0,
+    "explanation": "ATM (at-the-money) means the underlying’s current price is equal (or very close) to the option’s strike."
+  },
+  {
+    "category": "Equity Derivatives Fundamentals",
+    "question": "How do you compute notional of an option position?",
+    "setup_code": "",
+    "options": [
+      "quantity × option_price × contract_multiplier",
+      "quantity × option_price",
+      "quantity × contract_multiplier",
+      "option_price × contract_multiplier"
+    ],
+    "answer": 0,
+    "explanation": "Notional = qty × premium (option_price) × multiplier (e.g., 100 for US options)."
+  },
   {
     "category": "SQL Aggregation",
     "question": "How do you sum total fills grouped by symbol? (Think: GROUP BY + SUM)",
