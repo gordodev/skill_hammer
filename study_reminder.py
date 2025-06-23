@@ -23,18 +23,25 @@ def main():
         default=3,
         help='Number of questions per quiz'
     )
+    parser.add_argument(
+        '--json-file', '-j',
+        type=str,
+        default='questions.json',
+        help='Path to the questions JSON file'
+    )
     args = parser.parse_args()
 
-    # Inject CLI args into config
-    app = StudyReminder()
-    app.config['interval_minutes'] = args.interval
+    # Inject CLI args into config and questions file choice
+    app = StudyReminder(questions_file=args.json_file)
+    app.config['interval_minutes']   = args.interval
     app.config['questions_required'] = args.questions
-    app.time_remaining = args.interval * 60
+    app.time_remaining               = args.interval * 60
 
     app.run()
 
 class StudyReminder:
-    def __init__(self):
+    def __init__(self, questions_file='questions.json'):
+        self.questions_file = questions_file
         self.root = tk.Tk()
         self.root.title("Study Reminder")
         
@@ -42,12 +49,12 @@ class StudyReminder:
         self.config = self.load_config()
         
         # Initialize variables
-        self.correct_count = 0
+        self.correct_count      = 0
         self.questions_required = self.config.get('questions_required', 3)
-        self.time_remaining = self.config.get('interval_minutes', 10) * 60
-        self.quiz_active = False
-        self.current_question = None
-        self.user_answer = ""
+        self.time_remaining     = self.config.get('interval_minutes', 10) * 60
+        self.quiz_active        = False
+        self.current_question   = None
+        self.user_answer        = ""
         
         # Question bank
         self.questions = self.load_questions()
@@ -58,16 +65,16 @@ class StudyReminder:
         # Start countdown
         self.update_countdown()
     
-    def load_config(self):
+def load_config(self):
         """Load or create configuration file"""
         config_file = 'study_config.json'
         default_config = {
-            'interval_minutes': 10,
+            'interval_minutes':   10,
             'questions_required': 3,
-            'tray_width': 200,
-            'tray_height': 50,
-            'quiz_width': 800,
-            'quiz_height': 600
+            'tray_width':         200,
+            'tray_height':        50,
+            'quiz_width':         800,
+            'quiz_height':        600
         }
         
         try:
@@ -89,7 +96,7 @@ class StudyReminder:
     
     def load_questions(self):
         """Load questions from external JSON file or fall back to defaults."""
-        questions_file = 'questions.json'
+        questions_file = self.questions_file
     
         try:
             if os.path.exists(questions_file):
@@ -114,7 +121,6 @@ class StudyReminder:
             print(f"Error loading questions: {e}")
             return self.get_default_questions()
 
-    
     def get_default_questions(self):
         """Fallback questions if JSON file is missing"""
         return [
