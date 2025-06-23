@@ -62,20 +62,32 @@ class StudyReminder:
             return default_config
     
     def load_questions(self):
-        """Load questions from external JSON file"""
-        questions_file = 'questions.json'
-        
-        try:
-            if os.path.exists(questions_file):
-                with open(questions_file, 'r') as f:
-                    data = json.load(f)
+    """Load questions from external JSON file or fall back to defaults."""
+    questions_file = 'questions.json'
+
+    try:
+        if os.path.exists(questions_file):
+            with open(questions_file, 'r') as f:
+                data = json.load(f)
+
+                # If it’s a dict with a “questions” key, use that.
+                if isinstance(data, dict):
                     return data.get('questions', [])
-            else:
-                print(f"Warning: {questions_file} not found. Using default questions.")
-                return self.get_default_questions()
-        except Exception as e:
-            print(f"Error loading questions: {e}")
+                # If it’s already a list of questions, return it directly.
+                elif isinstance(data, list):
+                    return data
+                else:
+                    print("Warning: unexpected JSON format, expected dict or list.")
+                    return []
+
+        else:
+            print(f"Warning: {questions_file} not found. Using default questions.")
             return self.get_default_questions()
+
+    except Exception as e:
+        print(f"Error loading questions: {e}")
+        return self.get_default_questions()
+
     
     def get_default_questions(self):
         """Fallback questions if JSON file is missing"""
