@@ -2,7 +2,7 @@
   "questions": [
     {
       "category": "File I/O",
-      "question": "Open the file `fix.log` in read mode with file object `f`:\n```python\nwith open('fix.log', 'r') as f:\n    ...\n```",
+      "question": "Open the file `fix.log` in read mode with file object `f`:\n\n```python\n# you need to write this line\n```",
       "options": [
         "with open('fix.log', 'r') as f:",
         "open('fix.log', 'r') -> f",
@@ -10,11 +10,11 @@
         "file('fix.log', 'r')"
       ],
       "answer": 0,
-      "explanation": "Use the built-in open() with mode 'r' and a context manager."
+      "explanation": "Use a context manager with mode 'r'."
     },
     {
       "category": "File I/O",
-      "question": "Iterate through the file object `f`, one line at a time:\n```python\nfor line in f:\n    ...\n```",
+      "question": "Iterate through the file object `f`, one line at a time:\n\n```python\n# f is open\n```",
       "options": [
         "for line in f:",
         "while not f.eof():",
@@ -26,31 +26,31 @@
     },
     {
       "category": "String Parsing",
-      "question": "Strip leading/trailing whitespace from the string `line`:\n```python\nline = line.strip()\n```",
+      "question": "Strip leading/trailing whitespace from the string `line`:\n\n```python\nline = '   some text   '\n# now remove the spaces\n```",
       "options": [
-        "line.strip()",
-        "strip(line)",
-        "line = strip(line)",
+        "line = line.strip()",
+        "line = line.lstrip()",
+        "line = line.rstrip()",
         "line = line.trim()"
       ],
       "answer": 0,
-      "explanation": "`strip()` removes whitespace at both ends."
+      "explanation": "`strip()` removes whitespace from both ends."
     },
     {
       "category": "String Parsing",
-      "question": "Split `line` into parts on '|' if present, else on SOH (\\x01):\n```python\nparts = line.split('|' if '|' in line else '\\x01')\n```",
+      "question": "Split `line` into parts on `|` if present, else on SOH (`\\x01`):\n\n```python\n# assume line is a FIX message string\n```",
       "options": [
-        "line.split('|' if '|' in line else '\\x01')",
-        "re.split('\\||\\x01', line)",
-        "line.split('|') or line.split('\\x01')",
+        "parts = line.split('|' if '|' in line else '\\x01')",
+        "parts = re.split(r'\\||\\x01', line)",
+        "if '|' in line:\n    parts = line.split('|')\nelse:\n    parts = line.split('\\x01')",
         "parts = [line]"
       ],
       "answer": 0,
-      "explanation": "A conditional expression inside split() switches separator."
+      "explanation": "A conditional inside `split()` chooses the right separator."
     },
     {
       "category": "Data Structures",
-      "question": "Initialize an empty list named `pairs`:\n```python\npairs = []\n```",
+      "question": "Initialize an empty list named `pairs`:\n\n```python\n# start here\n```",
       "options": [
         "pairs = []",
         "pairs = list()",
@@ -62,11 +62,11 @@
     },
     {
       "category": "Parsing Logic",
-      "question": "Loop over each element in `parts` using variable `part`:\n```python\nfor part in parts:\n    ...\n```",
+      "question": "Loop over each element in `parts` using variable `part`:\n\n```python\nparts = [...]  # some list\n# iterate here\n```",
       "options": [
         "for part in parts:",
-        "parts.forEach(part)",
-        "while parts:",
+        "parts.forEach(lambda part: ...)",
+        "while parts:\n    part = parts.pop()",
         "foreach part in parts:"
       ],
       "answer": 0,
@@ -74,7 +74,7 @@
     },
     {
       "category": "Parsing Logic",
-      "question": "Only process `part` if it contains an '=' character:\n```python\nif '=' in part:\n    ...\n```",
+      "question": "Only process `part` if it contains an '=' character:\n\n```python\n# inside your loop\n```",
       "options": [
         "if '=' in part:",
         "if part.contains('='):",
@@ -86,79 +86,79 @@
     },
     {
       "category": "Parsing Logic",
-      "question": "Split `part` at the first '=' into `tag` and `value`:\n```python\ntag, value = part.split('=', 1)\n```",
+      "question": "Split `part` at the first '=' into `tag` and `value`:\n\n```python\n# part is something like '35=D'\n```",
       "options": [
-        "part.split('=', 1)",
-        "part.partition('=')",
-        "split(part, '=')",
-        "part.split('=')"
+        "tag, value = part.split('=', 1)",
+        "tag, sep, value = part.partition('=')",
+        "tag, value = part.split('=')",
+        "tag, value = re.split('=', part)"
       ],
       "answer": 0,
       "explanation": "`split(sep, 1)` splits on first occurrence only."
     },
     {
       "category": "Data Structures",
-      "question": "Append the `(tag, value)` tuple to `pairs`:\n```python\npairs.append((tag, value))\n```",
+      "question": "Append the `(tag, value)` tuple to `pairs`:\n\n```python\npairs = []\n# inside your loop\n```",
       "options": [
         "pairs.append((tag, value))",
-        "pairs += tag, value",
-        "pairs.add((tag,value))",
-        "append(pairs, (tag,value))"
+        "pairs += (tag, value)",
+        "pairs.add((tag, value))",
+        "append(pairs, (tag, value))"
       ],
       "answer": 0,
       "explanation": "Use `list.append()` to add an element."
     },
     {
       "category": "Dict Construction",
-      "question": "Build a dict `msg` from `pairs`:\n```python\nmsg = dict(pairs)\n```",
+      "question": "Build a dict `msg` from `pairs`:\n\n```python\npairs = [('35','D'), ('55','IBM')]\n# build dict here\n```",
       "options": [
         "msg = dict(pairs)",
-        "msg = {}.fromkeys(pairs)",
+        "msg = {k:v for k,v in pairs}",
         "msg = pairs.to_dict()",
-        "msg = build_dict(pairs)"
+        "msg = {}.fromkeys(pairs)"
       ],
       "answer": 0,
       "explanation": "Passing a list of (key, value) tuples to `dict()` constructs the dict."
     },
     {
       "category": "FIX Parsing",
-      "question": "Extract the FIX Symbol into `symbol` from `msg`:\n```python\nsymbol = msg['55']\n```",
+      "question": "Extract the FIX Symbol into `symbol` from `msg`:\n\n```python\nmsg = {'55':'IBM', ...}\n# get symbol\n```",
       "options": [
         "symbol = msg['55']",
         "symbol = msg.get('55')",
-        "symbol = msg.55",
-        "symbol = msg['symbol']"
+        "symbol = msg.get('Symbol')",
+        "symbol = msg.Symbol"
       ],
       "answer": 0,
       "explanation": "Tag 55 is the Symbol field in FIX."
     },
     {
       "category": "FIX Parsing",
-      "question": "Extract the FIX Quantity into `quantity` from `msg`:\n```python\nquantity = msg['38']\n```",
+      "question": "Extract the FIX Quantity into `quantity` from `msg`:\n\n```python\nmsg = {'38':'100', ...}\n# get quantity\n```",
       "options": [
         "quantity = msg['38']",
         "quantity = int(msg['38'])",
         "quantity = msg.get('38')",
-        "quantity = msg['Qty']"
+        "quantity = msg.Quantity"
       ],
       "answer": 0,
       "explanation": "Tag 38 is the OrderQty field in FIX."
     },
     {
       "category": "Aggregation",
-      "question": "Compute total executed quantity for order 'ORD1':\n```python\ntotal = sum(fills['ORD1'])\n```",
+      "question": "Compute total executed quantity for order `'ORD1'`:\n\n```python\nfills = {'ORD1': [20, 30, 50]}\n# compute total\n```",
       "options": [
         "total = sum(fills['ORD1'])",
         "total = fills['ORD1'].sum()",
         "total = sum(fills)",
-        "total = fills['ORD1']"
+        "total = len(fills['ORD1'])"
       ],
       "answer": 0,
       "explanation": "Use `sum()` over the list of fill quantities."
     },
     {
       "category": "VWAP",
-      "question": "Initialize `total_value` to zero for VWAP calculation:\n```python\ntotal_value = 0\n```",
+      "question": "Initialize `total_value` to zero for VWAP calculation:\n\n```python\n# before looping trades\n```",
       "options": [
         "total_value = 0",
         "total_value = []",
@@ -170,7 +170,7 @@
     },
     {
       "category": "VWAP",
-      "question": "Initialize `total_size` to zero for VWAP calculation:\n```python\ntotal_size = 0\n```",
+      "question": "Initialize `total_size` to zero for VWAP calculation:\n\n```python\n# before looping trades\n```",
       "options": [
         "total_size = 0",
         "total_size = []",
@@ -182,19 +182,19 @@
     },
     {
       "category": "VWAP",
-      "question": "Loop over `trades`, unpacking into `price` and `size`:\n```python\nfor price, size in trades:\n    ...\n```",
+      "question": "Loop over `trades`, unpacking into `price` and `size`:\n\n```python\ntrades = [(10,2), (12,3)]\n# loop here\n```",
       "options": [
         "for price, size in trades:",
-        "trades.forEach(price, size)",
-        "while trades:",
-        "foreach trade in trades:"
+        "for trade in trades:\n    price, size = trade",
+        "trades.forEach(lambda p,s: ...)",
+        "while trades:\n    price, size = trades.pop()"
       ],
       "answer": 0,
       "explanation": "Tuple unpacking in a for-loop."
     },
     {
       "category": "VWAP",
-      "question": "Accumulate trade value into `total_value`:\n```python\ntotal_value += price * size\n```",
+      "question": "Accumulate trade value into `total_value`:\n\n```python\n# inside your loop\n```",
       "options": [
         "total_value += price * size",
         "total_value = price * size",
@@ -202,11 +202,11 @@
         "total_value.append(price * size)"
       ],
       "answer": 0,
-      "explanation": "Multiply price by size and add it to the accumulator."
+      "explanation": "Multiply price by size and add to the accumulator."
     },
     {
       "category": "VWAP",
-      "question": "Accumulate trade size into `total_size`:\n```python\ntotal_size += size\n```",
+      "question": "Accumulate trade size into `total_size`:\n\n```python\n# inside your loop\n```",
       "options": [
         "total_size += size",
         "total_value += size",
@@ -218,7 +218,7 @@
     },
     {
       "category": "VWAP",
-      "question": "Calculate VWAP into `vwap`:\n```python\nvwap = total_value / total_size\n```",
+      "question": "Calculate VWAP into `vwap`:\n\n```python\n# after loop\n```",
       "options": [
         "vwap = total_value / total_size",
         "vwap = total_size / total_value",
@@ -230,43 +230,43 @@
     },
     {
       "category": "Sockets",
-      "question": "Import the socket module:\n```python\nimport socket\n```",
+      "question": "Import the socket module:\n\n```python\n# top of your script\n```",
       "options": [
         "import socket",
-        "socket = require('socket')",
+        "import Socket",
         "from socket import *",
-        "import Socket"
+        "require('socket')"
       ],
       "answer": 0,
       "explanation": "Use the import statement for Python modules."
     },
     {
       "category": "Sockets",
-      "question": "Create a TCP socket assigned to `sock`:\n```python\nsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n```",
+      "question": "Create a TCP socket assigned to `sock`:\n\n```python\n# after importing socket\n```",
       "options": [
-        "socket.socket(socket.AF_INET, socket.SOCK_STREAM)",
-        "socket.socket(socket.AF_INET, socket.SOCK_DGRAM)",
-        "socket.socket()",
-        "sock = socket.TCP()"
+        "sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)",
+        "sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)",
+        "sock = socket.TCP()",
+        "sock = socket.new('TCP')"
       ],
       "answer": 0,
       "explanation": "AF_INET+SOCK_STREAM specifies a TCP socket."
     },
     {
       "category": "Sockets",
-      "question": "Connect `sock` to `example.com` on port 5000:\n```python\nsock.connect(('example.com', 5000))\n```",
+      "question": "Connect `sock` to `example.com` on port 5000:\n\n```python\n# after creating sock\n```",
       "options": [
         "sock.connect(('example.com', 5000))",
         "sock.connect('example.com', 5000)",
         "connect(sock, 'example.com', 5000)",
-        "sock.connect(('127.0.0.1', 5000))"
+        "sock.open('example.com', 5000)"
       ],
       "answer": 0,
       "explanation": "Use a tuple (host, port) with `connect()`."
     },
     {
       "category": "Sockets",
-      "question": "Close the socket `sock`:\n```python\nsock.close()\n```",
+      "question": "Close the socket `sock`:\n\n```python\n# when you’re done\n```",
       "options": [
         "sock.close()",
         "close(sock)",
@@ -278,7 +278,7 @@
     },
     {
       "category": "System Monitoring",
-      "question": "Import the `psutil` module:\n```python\nimport psutil\n```",
+      "question": "Import the `psutil` module:\n\n```python\n# top of your script\n```",
       "options": [
         "import psutil",
         "import psu",
@@ -290,19 +290,19 @@
     },
     {
       "category": "System Monitoring",
-      "question": "Get 1-second CPU usage into `cpu`:\n```python\ncpu = psutil.cpu_percent(interval=1)\n```",
+      "question": "Get 1-second CPU usage into `cpu`:\n\n```python\n# after importing psutil\n```",
       "options": [
-        "psutil.cpu_percent(interval=1)",
-        "psutil.cpu_percent(1)",
-        "psutil.get_cpu(1)",
-        "psutil.cpu_usage(1)"
+        "cpu = psutil.cpu_percent(interval=1)",
+        "cpu = psutil.cpu_percent(1)",
+        "cpu = psutil.get_cpu(1)",
+        "cpu = psutil.cpu_usage(1)"
       ],
       "answer": 0,
       "explanation": "`cpu_percent()` blocks for the interval and returns usage."
     },
     {
       "category": "System Monitoring",
-      "question": "Get virtual memory stats into `mem`:\n```python\nmem = psutil.virtual_memory()\n```",
+      "question": "Get virtual memory stats into `mem`:\n\n```python\n# after importing psutil\n```",
       "options": [
         "mem = psutil.virtual_memory()",
         "mem = psutil.mem_info()",
@@ -314,19 +314,19 @@
     },
     {
       "category": "System Monitoring",
-      "question": "Get root-filesystem disk usage into `disk`:\n```python\ndisk = psutil.disk_usage('/')\n```",
+      "question": "Get root-filesystem disk usage into `disk`:\n\n```python\n# after importing psutil\n```",
       "options": [
         "disk = psutil.disk_usage('/')",
-        "disk = psutil.disk('/').usage()",
-        "disk = psutil.get_disk_usage()",
-        "disk = psutil.usage('/')"
+        "disk = psutil.get_disk_usage('/')",
+        "disk = psutil.usage('/')",
+        "disk = psutil.root_usage()"
       ],
       "answer": 0,
       "explanation": "`disk_usage(path)` returns usage stats for that path."
     },
     {
       "category": "Regex",
-      "question": "Import the regex module:\n```python\nimport re\n```",
+      "question": "Import the `re` (regex) module:\n\n```python\n# top of your script\n```",
       "options": [
         "import re",
         "import regex",
@@ -338,43 +338,43 @@
     },
     {
       "category": "SQL",
-      "question": "Replace `TOP 10` with `TOP 3` in SQL query `query`:\n```python\nquery = query.replace('TOP 10', 'TOP 3')\n```",
+      "question": "Replace `TOP 10` with `TOP 3` in SQL query `query`:\n\n```python\n# query is a string\n```",
       "options": [
-        "query.replace('TOP 10','TOP 3')",
-        "query.sub('TOP 10','TOP 3')",
-        "re.sub('TOP 10','TOP 3', query)",
-        "query = query.swap('TOP 10','TOP 3')"
+        "query = query.replace('TOP 10', 'TOP 3')",
+        "query = query.swap('TOP 10', 'TOP 3')",
+        "query = re.sub('TOP 10', 'TOP 3', query)",
+        "query = query.remove('TOP 10')"
       ],
       "answer": 0,
       "explanation": "`str.replace(old, new)` performs a simple substring swap."
     },
     {
       "category": "SQL & Regex",
-      "question": "Use regex to substitute any `TOP N` with `TOP {limit}`:\n```python\nquery = re.sub(r'TOP\\s+\\d+', f'TOP {limit}', query)\n```",
+      "question": "Use regex to substitute any `TOP N` with `TOP {limit}`:\n\n```python\n# limit is an integer\n```",
       "options": [
-        "re.sub(r'TOP\\s+\\d+', f'TOP {limit}', query)",
-        "query.replace('\\d+','{limit}')",
-        "regex.sub('TOP.*','TOP {limit}', query)",
-        "re.match(r'TOP','TOP {limit}', query)"
+        "query = re.sub(r'TOP\\s+\\d+', f'TOP {limit}', query)",
+        "query = query.replace(r'TOP\\d+', f'TOP {limit}')",
+        "query = regex.sub('TOP.*', f'TOP {limit}', query)",
+        "query = re.match(r'TOP', query)"
       ],
       "answer": 0,
       "explanation": "`re.sub()` lets you use patterns and replacement strings."
     },
     {
       "category": "Dict Access",
-      "question": "Given `msg = {'8':'FIX.4.2','9':'112','35':'D','55':'IBM','38':'100'}`, extract the symbol:\n```python\nsymbol = msg['55']\n```",
+      "question": "Given `msg = {'8':'FIX.4.2','9':'112','35':'D','55':'IBM','38':'100'}`, extract the symbol:\n\n```python\n# get symbol here\n```",
       "options": [
         "symbol = msg['55']",
-        "symbol = msg.get('IBM')",
-        "symbol = msg[55]",
-        "symbol = msg['symbol']"
+        "symbol = msg.get('55')",
+        "symbol = msg['symbol']",
+        "symbol = msg.Symbol"
       ],
       "answer": 0,
       "explanation": "Tag 55 maps to the Symbol."
     },
     {
       "category": "String Join",
-      "question": "Given `items = ['apple','banana','cherry']`, assemble into comma-separated string `csv`:\n```python\ncsv = ','.join(items)\n```",
+      "question": "Given `items = ['apple','banana','cherry']`, assemble into comma-separated string `csv`:\n\n```python\nitems = ['apple','banana','cherry']\n# build csv here\n```",
       "options": [
         "csv = ','.join(items)",
         "csv = items.join(',')",
@@ -386,7 +386,7 @@
     },
     {
       "category": "Looping",
-      "question": "Loop over `items` with index `i` and value `item` using `enumerate`:\n```python\nfor i, item in enumerate(items):\n    ...\n```",
+      "question": "Loop over `items` with index `i` and value `item` using `enumerate`:\n\n```python\nitems = ['apple','banana','cherry']\n# loop here\n```",
       "options": [
         "for i, item in enumerate(items):",
         "for item in items():",
@@ -398,36 +398,36 @@
     },
     {
       "category": "Set Logic",
-      "question": "Given `flags = {'A','Z'}`, check if any of 'X','Y','Z' is present:\n```python\nif any(f in flags for f in ['X','Y','Z']):\n    ...\n```",
+      "question": "Given `flags = {'A','Z'}`, check if any of `'X'`, `'Y'`, or `'Z'` is present:\n\n```python\nflags = {'A','Z'}\n# test here\n```",
       "options": [
-        "any(f in flags for f in ['X','Y','Z'])",
-        "flags.intersection({'X','Y','Z'})",
-        "flags.contains('X','Y','Z')",
-        "if 'Z' in flags:"
+        "if any(f in flags for f in ['X','Y','Z']):",
+        "if flags & {'X','Y','Z'}:",
+        "if 'Z' in flags:",
+        "if flags.contains('Z'):"
       ],
       "answer": 0,
-      "explanation**": "`any()` short-circuits on the first True."
+      "explanation": "`any()` short-circuits on the first True."
     },
     {
       "category": "Threading",
-      "question": "Launch function `monitor` in a new daemon thread:\n```python\nthreading.Thread(target=monitor, daemon=True).start()\n```",
+      "question": "Launch function `monitor` in a new daemon thread:\n\n```python\n# after defining monitor()\n```",
       "options": [
-        "Thread(target=monitor, daemon=True).start()",
-        "thread.start_new_thread(monitor)",
-        "monitor_thread = Thread(monitor)",
-        "threading.run(monitor)"
+        "threading.Thread(target=monitor, daemon=True).start()",
+        "threading.start_new_thread(monitor, ())",
+        "Thread(monitor).start()",
+        "monitor_thread = Thread(monitor)"
       ],
       "answer": 0,
       "explanation": "Setting `daemon=True` means the thread won’t block program exit."
     },
     {
       "category": "List Comprehension",
-      "question": "Given `lines = ['start service','stop service','start backup']`, collect lines beginning with 'start':\n```python\nstart_lines = [l for l in lines if l.startswith('start')]\n```",
+      "question": "Given `lines = ['start service','stop service','start backup']`, collect lines beginning with 'start':\n\n```python\nlines = ['start service','stop service','start backup']\n# build start_lines\n```",
       "options": [
-        "[l for l in lines if l.startswith('start')]",
-        "[l for l in lines if 'start' in l]",
-        "filter(lambda l:l.startswith('start'), lines)",
-        "[l in lines if l[:5]=='start']"
+        "start_lines = [l for l in lines if l.startswith('start')]",
+        "start_lines = filter(lambda l: l.startswith('start'), lines)",
+        "start_lines = [l for l in lines if 'start' in l]",
+        "start_lines = [l for l in lines if l[:5] == 'start']"
       ],
       "answer": 0,
       "explanation": "`startswith()` tests the prefix and a comprehension filters accordingly."
