@@ -6,6 +6,32 @@ import time
 from datetime import datetime
 import threading
 import os
+import argparse
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Study Reminder')
+    parser.add_argument(
+        '--interval', '-i',
+        type=int,
+        default=10,
+        help='Interval between quizzes, in minutes'
+    )
+    parser.add_argument(
+        '--questions', '-q',
+        type=int,
+        default=3,
+        help='Number of questions per quiz'
+    )
+    args = parser.parse_args()
+
+    # Inject CLI args into config
+    app = StudyReminder()
+    app.config['interval_minutes'] = args.interval
+    app.config['questions_required'] = args.questions
+    app.time_remaining = args.interval * 60
+
+    app.run()
 
 class StudyReminder:
     def __init__(self):
@@ -387,5 +413,4 @@ class StudyReminder:
         self.root.mainloop()
 
 if __name__ == "__main__":
-    app = StudyReminder()
-    app.run()
+    main()
