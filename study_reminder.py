@@ -65,7 +65,7 @@ class StudyReminder:
         # Start countdown
         self.update_countdown()
     
-def load_config(self):
+    def load_config(self):
         """Load or create configuration file"""
         config_file = 'study_config.json'
         default_config = {
@@ -103,10 +103,10 @@ def load_config(self):
                 with open(questions_file, 'r') as f:
                     data = json.load(f)
     
-                    # If it’s a dict with a “questions” key, use that.
+                    # If it's a dict with a "questions" key, use that.
                     if isinstance(data, dict):
                         return data.get('questions', [])
-                    # If it’s already a list of questions, return it directly.
+                    # If it's already a list of questions, return it directly.
                     elif isinstance(data, list):
                         return data
                     else:
@@ -220,7 +220,22 @@ def load_config(self):
         )
         self.category_label.pack(side='right')
         
-        # Answer input frame (NEW)
+        # Setup code frame (NEW - displays the context/setup)
+        self.setup_frame = tk.Frame(main_frame, bg='#2b2b2b', relief='ridge', bd=2)
+        self.setup_frame.pack(fill='x', pady=(0, 20))
+        
+        self.setup_label = tk.Label(
+            self.setup_frame,
+            text="",
+            font=('Consolas', 12),
+            bg='#2b2b2b',
+            fg='#00ff00',
+            justify='left',
+            anchor='w'
+        )
+        self.setup_label.pack(pady=10, padx=20, fill='x')
+        
+        # Answer input frame
         input_frame = tk.Frame(main_frame, bg='#2b2b2b', relief='ridge', bd=2)
         input_frame.pack(fill='x', pady=(0, 20))
         
@@ -330,6 +345,13 @@ def load_config(self):
         self.category_label.config(text=f"Category: {self.current_question['category']}")
         self.question_label.config(text=self.current_question['question'])
         self.feedback_label.config(text="")
+        
+        # Update setup code display (NEW)
+        if 'setup_code' in self.current_question and self.current_question['setup_code']:
+            self.setup_frame.pack(fill='x', pady=(0, 20))
+            self.setup_label.config(text=self.current_question['setup_code'])
+        else:
+            self.setup_frame.pack_forget()
         
         # Clear answer entry
         self.answer_entry.delete(0, tk.END)
