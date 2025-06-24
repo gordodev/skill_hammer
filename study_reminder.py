@@ -44,6 +44,7 @@ def main():
     )
     app.config['interval_minutes']   = args.interval
     app.config['questions_required'] = args.questions
+    app.questions_required = args.questions  # ADD THIS LINE
     app.time_remaining               = args.interval * 60
 
     app.run()
