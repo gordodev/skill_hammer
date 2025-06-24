@@ -612,18 +612,18 @@
       "explanation": "Python allows tuple unpacking directly in the for loop: for price, size in trades:"
     },
     {
-      "category": "Trading Calculations - VWAP",
-      "question": "Accumulate trade value (price × size) into 'total_value'.",
-      "setup_code": "# Inside loop:\nprice = 100.50\nsize = 1000\ntotal_value = 0  # Already initialized",
-      "options": [
+    "category": "Trading Calculations - VWAP",
+    "question": "You're calculating VWAP and need to accumulate the total dollar value of all trades. Given a trade with price=100.50 and size=1000, how do you add this trade's value to your running total?",
+    "setup_code": "# VWAP calculation in progress:\nprice = 100.50\nsize = 1000\ntotal_value = 85000  # Previous trades' value",
+    "options": [
         "total_value += price * size",
-        "total_value = price * size",
+        "total_value = price * size", 
         "total_value + price * size",
         "append(total_value, price * size)"
-      ],
-      "answer": 0,
-      "explanation": "Use += to accumulate values. This adds price * size to the existing total_value."
-    },
+    ],
+    "answer": 0,
+    "explanation": "VWAP requires accumulating total dollar value across all trades. Use += to add this trade's value (100.50 × 1000 = $100,500) to the existing total."
+    },  
     {
       "category": "Trading Calculations - VWAP",
       "question": "Calculate VWAP from 'total_value' and 'total_size'. Store in 'vwap'.",
