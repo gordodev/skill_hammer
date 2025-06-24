@@ -3,7 +3,7 @@ from tkinter import ttk
 import json
 import random
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 import threading
 import os
 import argparse
@@ -196,7 +196,7 @@ class StudyReminder:
     def start_quiz(self):
         self.quiz_active = True
         self.correct_count = 0
-        self.quiz_start_time = datetime.now(datetime.UTC)
+        self.quiz_start_time = datetime.now(timezone.utc)
         self.log_entries       = []
 
         # Create quiz window
@@ -351,7 +351,7 @@ class StudyReminder:
     
     def load_question(self):
         """Load a random question"""
-        self.question_start_time = datetime.now(datetime.UTC)
+        self.question_start_time = datetime.now(timezone.utc)
         if not self.questions:
             self.feedback_label.config(text="No questions available!", fg='#ff6666')
             return
@@ -393,7 +393,7 @@ class StudyReminder:
             btn.pack(fill='x', pady=5)
             
     def record_answer(self, given, was_correct):
-        duration = (datetime.now(datetime.UTC) - self.question_start_time).total_seconds()
+        duration = (datetime.now(timezone.utc) - self.question_start_time).total_seconds()
         entry = {
             'question':       self.current_question['question'],
             'given_answer':   given,
@@ -474,7 +474,7 @@ class StudyReminder:
         self.quiz_window.destroy()
 
         # Build the quiz summary log
-        quiz_end = datetime.now(datetime.UTC)
+        quiz_end = datetime.now(timezone.utc)
         score = (self.correct_count / self.questions_required) * 100
         log = {
             'quiz_start':        self.quiz_start_time.strftime('%Y-%m-%dT%H:%M:%SZ'),
