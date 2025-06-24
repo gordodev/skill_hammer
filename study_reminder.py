@@ -9,6 +9,7 @@ import os
 import argparse
 
 
+
 def main():
     parser = argparse.ArgumentParser(description='Study Reminder')
     parser.add_argument(
@@ -29,32 +30,45 @@ def main():
         default='questions.json',
         help='Path to the questions JSON file'
     )
+    parser.add_argument(
+        '--test', '-t',
+        action='store_true',
+        help='Disable logging for tests'
+    )
     args = parser.parse_args()
 
-    # Inject CLI args into config and questions file choice
-    app = StudyReminder(questions_file=args.json_file)
+    # Initialize app with logging control
+    app = StudyReminder(
+        questions_file=args.json_file,
+        disable_logging=args.test
+    )
     app.config['interval_minutes']   = args.interval
     app.config['questions_required'] = args.questions
     app.time_remaining               = args.interval * 60
 
     app.run()
 
+
 class StudyReminder:
-    def __init__(self, questions_file='questions.json'):
+    LOG_FILE = 'quiz_log.ndjson'
+    def __init__(self, questions_file='questions.json', disable_logging=False):
         self.questions_file = questions_file
+        self.logging_enabled = not disable_logging
         self.root = tk.Tk()
         self.root.title("Study Reminder")
         
         # Load configuration
         self.config = self.load_config()
         
-        # Initialize variables
+        # Logging state
+        self.log_entries = []
+        
+        # Quiz state
         self.correct_count      = 0
         self.questions_required = self.config.get('questions_required', 3)
         self.time_remaining     = self.config.get('interval_minutes', 10) * 60
         self.quiz_active        = False
         self.current_question   = None
-        self.user_answer        = ""
         
         # Question bank
         self.questions = self.load_questions()
@@ -97,26 +111,26 @@ class StudyReminder:
     def load_questions(self):
         """Load questions from external JSON file or fall back to defaults."""
         questions_file = self.questions_file
-    
+
         try:
             if os.path.exists(questions_file):
                 with open(questions_file, 'r') as f:
                     data = json.load(f)
-    
-                    # If it's a dict with a "questions" key, use that.
-                    if isinstance(data, dict):
-                        return data.get('questions', [])
-                    # If it's already a list of questions, return it directly.
-                    elif isinstance(data, list):
-                        return data
-                    else:
-                        print("Warning: unexpected JSON format, expected dict or list.")
-                        return []
-    
+
+                # If it's a dict with a "questions" key, use that.
+                if isinstance(data, dict):
+                    return data.get('questions', [])
+                # If it's already a list of questions, return it directly.
+                elif isinstance(data, list):
+                    return data
+                else:
+                    print(f"Warning: unexpected JSON format, expected dict or list.")
+                    return []
+
             else:
                 print(f"Warning: {questions_file} not found. Using default questions.")
                 return self.get_default_questions()
-    
+
         except Exception as e:
             print(f"Error loading questions: {e}")
             return self.get_default_questions()
@@ -142,14 +156,14 @@ class StudyReminder:
     
     def setup_tray_window(self):
         """Setup the small tray window"""
-        # Configure tray window
         width = self.config.get('tray_width', 200)
         height = self.config.get('tray_height', 50)
-        self.root.geometry(f"{width}x{height}+{self.root.winfo_screenwidth()-width-10}+10")
+        x = self.root.winfo_screenwidth() - width - 10
+        y = 10
+        self.root.geometry(f"{width}x{height}+{x}+{y}")
         self.root.attributes('-topmost', True)
         self.root.configure(bg='#2b2b2b')
-        
-        # Create countdown label
+
         self.countdown_label = tk.Label(
             self.root,
             text="",
@@ -158,9 +172,9 @@ class StudyReminder:
             fg='#00ff00'
         )
         self.countdown_label.pack(expand=True, fill='both')
-        
-        # Prevent closing
+
         self.root.protocol("WM_DELETE_WINDOW", self.on_tray_close)
+
     
     def on_tray_close(self):
         """Handle tray window close attempt"""
@@ -179,10 +193,11 @@ class StudyReminder:
             self.start_quiz()
     
     def start_quiz(self):
-        """Start the quiz mode"""
         self.quiz_active = True
         self.correct_count = 0
-        
+        self.quiz_start_time = datetime.utcnow()
+        self.log_entries       = []
+
         # Create quiz window
         self.quiz_window = tk.Toplevel(self.root)
         self.quiz_window.title("SKILL CHECK TIME!")
@@ -335,6 +350,7 @@ class StudyReminder:
     
     def load_question(self):
         """Load a random question"""
+        self.question_start_time = datetime.utcnow()
         if not self.questions:
             self.feedback_label.config(text="No questions available!", fg='#ff6666')
             return
@@ -374,6 +390,19 @@ class StudyReminder:
                 command=lambda idx=i: self.select_multiple_choice(idx)
             )
             btn.pack(fill='x', pady=5)
+            
+    def record_answer(self, given, was_correct):
+        duration = (datetime.utcnow() - self.question_start_time).total_seconds()
+        entry = {
+            'question':       self.current_question['question'],
+            'given_answer':   given,
+            'correct_answer': self.current_question['options'][self.current_question['answer']],
+            'was_correct':    was_correct,
+            'duration_secs':  duration
+        }
+        if self.logging_enabled:
+            self.log_entries.append(entry)
+            
     
     def submit_typed_answer(self):
         """Submit the typed answer"""
@@ -398,6 +427,8 @@ class StudyReminder:
                     is_correct = True
                     break
         
+        self.record_answer(typed_answer, is_correct)
+        
         if is_correct:
             self.handle_correct_answer()
         else:
@@ -417,6 +448,11 @@ class StudyReminder:
     def handle_correct_answer(self):
         """Handle correct answer"""
         self.correct_count += 1
+        # Log the correct answer
+        self.record_answer(
+            self.current_question['options'][self.current_question['answer']],
+            True,
+        )
         self.progress_label.config(text=f"Progress: {self.correct_count}/{self.questions_required}")
         
         if self.correct_count >= self.questions_required:
@@ -427,14 +463,39 @@ class StudyReminder:
     
     def skip_question(self):
         """Skip current question"""
+        # Log that the user skipped this question
+        self.record_answer('skipped', False)
         self.load_question()
     
     def end_quiz(self):
         """End quiz and reset timer"""
         self.quiz_active = False
         self.quiz_window.destroy()
+
+        # Build the quiz summary log
+        quiz_end = datetime.utcnow()
+        score = (self.correct_count / self.questions_required) * 100
+        log = {
+            'quiz_start':        self.quiz_start_time.strftime('%Y-%m-%dT%H:%M:%SZ'),
+            'quiz_end':          quiz_end.strftime('%Y-%m-%dT%H:%M:%SZ'),
+            'questions_required': self.questions_required,
+            'correct_count':      self.correct_count,
+            'score_percent':      score,
+            'questions':         self.log_entries
+        }
+        if self.logging_enabled:
+            self.write_log(log)
+
+        # Reset timer for next quiz
         self.time_remaining = self.config.get('interval_minutes', 10) * 60
         self.update_countdown()
+        
+    def write_log(self, log_data):
+        try:
+            with open(self.LOG_FILE, 'a') as f:
+                f.write(json.dumps(log_data) + '\n')
+        except Exception as e:
+            print(f"Error writing log: {e}")
     
     def run(self):
         """Start the application"""
