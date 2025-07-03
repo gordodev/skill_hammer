@@ -1,6 +1,331 @@
 {
   "questions": [
- {
+{
+    "category": "FIX Session Management",
+    "question": "What FIX message type indicates a session logout?",
+    "setup_code": "Sample FIX message:\n8=FIX.4.4|9=54|35=5|49=CLIENT|56=BROKER|34=125|52=20250701-14:30:15|10=123|",
+    "options": [
+      "35=A (Logon)",
+      "35=5 (Logout)",
+      "35=0 (Heartbeat)",
+      "35=3 (Reject)"
+    ],
+    "answer": 1,
+    "explanation": "FIX message type 35=5 is Logout, used to terminate a FIX session. This was the key finding in the TransFICC troubleshooting scenario."
+  },
+  {
+    "category": "FIX Session Management",
+    "question": "In FIX protocol, what happens when heartbeat timeout occurs?",
+    "setup_code": "",
+    "options": [
+      "Test Request message is sent",
+      "Session automatically disconnects",
+      "Sequence numbers reset",
+      "All pending orders are cancelled"
+    ],
+    "answer": 0,
+    "explanation": "When heartbeat timeout occurs, the receiving party should send a Test Request (35=1) to verify if the session is still active before disconnecting."
+  },
+  {
+    "category": "FIX Session Management",
+    "question": "What is the purpose of sequence numbers in FIX protocol?",
+    "setup_code": "Example FIX header:\n8=FIX.4.4|9=165|35=D|49=CLIENT|56=BROKER|34=89|52=20250701-14:30:15|",
+    "options": [
+      "Session authentication",
+      "Message encryption", 
+      "Message ordering and gap detection",
+      "Latency measurement"
+    ],
+    "answer": 2,
+    "explanation": "Sequence numbers (tag 34) ensure message ordering and help detect gaps or duplicate messages in FIX sessions. In the example, 34=89 shows this is the 89th message."
+  },
+  {
+    "category": "FIX Message Types",
+    "question": "Which FIX message type is used to send a new order?",
+    "setup_code": "Sample NewOrderSingle:\n8=FIX.4.4|9=165|35=D|49=CLIENT|56=BROKER|34=89|52=20250701-14:30:15|11=ORD123|55=AAPL|54=1|38=100|40=2|44=150.50|60=20250701-14:30:15|10=123|",
+    "options": [
+      "35=8 (ExecutionReport)",
+      "35=F (OrderCancelRequest)", 
+      "35=D (NewOrderSingle)",
+      "35=G (OrderCancelReplaceRequest)"
+    ],
+    "answer": 2,
+    "explanation": "NewOrderSingle (35=D) is used to submit a new order to the market. This is the primary order entry message type."
+  },
+  {
+    "category": "FIX Message Types",
+    "question": "What does ExecutionReport (35=8) communicate?",
+    "setup_code": "Sample ExecutionReport:\n8=FIX.4.4|9=180|35=8|49=BROKER|56=CLIENT|34=156|52=20250701-14:30:16|11=ORD123|17=EXEC001|150=2|39=2|55=AAPL|54=1|38=100|14=100|151=0|6=150.50|10=089|",
+    "options": [
+      "Market data updates",
+      "Order status and execution details",
+      "Session status",
+      "Account information"
+    ],
+    "answer": 1,
+    "explanation": "ExecutionReport provides order status updates including fills, rejects, cancellations, and other order state changes. In the example: 39=2 (Filled), 14=100 (CumQty), 151=0 (LeavesQty)."
+  },
+  {
+    "category": "FIX Message Fields",
+    "question": "Which tag represents ClOrdID (Client Order ID)?",
+    "setup_code": "Order message excerpt:\n11=ORD123|55=AAPL|54=1|38=100|40=2|44=150.50|",
+    "options": [
+      "Tag 35",
+      "Tag 11", 
+      "Tag 55",
+      "Tag 38"
+    ],
+    "answer": 1,
+    "explanation": "Tag 11 is ClOrdID, the unique identifier assigned by the client to each order. In the example, 11=ORD123 is the client order ID."
+  },
+  {
+    "category": "FIX Message Fields",
+    "question": "In a NewOrderSingle message, what does tag 54 represent?",
+    "setup_code": "Order fields:\n55=AAPL|54=1|38=100|40=2|44=150.50|",
+    "options": [
+      "Symbol",
+      "Order Quantity",
+      "Side (1=Buy, 2=Sell)",
+      "Order Type"
+    ],
+    "answer": 2,
+    "explanation": "Tag 54 is Side field where 1=Buy and 2=Sell. In the example, 54=1 indicates this is a Buy order."
+  },
+  {
+    "category": "FIX Message Fields",
+    "question": "What does OrdStatus (tag 39) value of '8' indicate?",
+    "setup_code": "ExecutionReport status fields:\n150=8|39=8|103=99|58=Invalid symbol|",
+    "options": [
+      "New",
+      "Filled", 
+      "Rejected",
+      "Cancelled"
+    ],
+    "answer": 2,
+    "explanation": "OrdStatus=8 means Rejected. Other common values: 0=New, 1=PartiallyFilled, 2=Filled, 4=Cancelled. The example shows a rejection with reason code 103=99."
+  },
+  {
+    "category": "FIX Troubleshooting",
+    "question": "Client reports FIX orders not being acknowledged. First troubleshooting step?",
+    "setup_code": "",
+    "options": [
+      "Restart the trading application",
+      "Check order quantities",
+      "Check FIX session status and connectivity",
+      "Verify account permissions"
+    ],
+    "answer": 2,
+    "explanation": "Always start with session-level diagnostics: Is the FIX session up? Are heartbeats flowing? Check connection status first before investigating order-specific issues."
+  },
+  {
+    "category": "FIX Troubleshooting",
+    "question": "How do you trace a specific order through FIX logs?",
+    "setup_code": "Log search example:\ngrep \"11=ORD123\" fix_messages.log",
+    "options": [
+      "Look for timestamp ranges only",
+      "Search for ClOrdID (tag 11) across all messages",
+      "Search by message sequence numbers",
+      "Filter by session ID only"
+    ],
+    "answer": 1,
+    "explanation": "ClOrdID (tag 11) is the unique client order identifier that appears in NewOrderSingle, ExecutionReports, and related messages for the same order."
+  },
+  {
+    "category": "FIX Troubleshooting",
+    "question": "FIX session keeps disconnecting. What should you check first?",
+    "setup_code": "",
+    "options": [
+      "Order rejection rates",
+      "Heartbeat interval configuration and network connectivity",
+      "Message sequence numbers",
+      "Account limits"
+    ],
+    "answer": 1,
+    "explanation": "Session disconnections are often caused by heartbeat timeouts or network issues. Check HeartBtInt (tag 108) settings and network stability first."
+  },
+  {
+    "category": "FIX Session Management",
+    "question": "What is required in a FIX Logon message?",
+    "setup_code": "Sample Logon:\n8=FIX.4.4|9=95|35=A|49=CLIENT|56=BROKER|34=1|52=20250701-14:30:00|98=0|108=30|141=Y|10=156|",
+    "options": [
+      "EncryptMethod (98) and HeartBtInt (108)",
+      "Username and Password only",
+      "ResetSeqNumFlag only", 
+      "Account information"
+    ],
+    "answer": 0,
+    "explanation": "Logon messages must include EncryptMethod (98=0 for none) and HeartBtInt (108=30 for 30 seconds). Optional: ResetSeqNumFlag (141=Y)."
+  },
+  {
+    "category": "FIX Message Validation",
+    "question": "How is a FIX message checksum calculated?",
+    "setup_code": "Message without checksum:\n8=FIX.4.4|9=54|35=0|49=CLIENT|56=BROKER|34=125|52=20250701-14:30:15|",
+    "options": [
+      "MD5 hash of entire message",
+      "Sum of all character ASCII values mod 256",
+      "CRC32 of message body",
+      "XOR of all bytes"
+    ],
+    "answer": 1,
+    "explanation": "FIX checksum (tag 10) is the sum of all ASCII character values in the message (excluding the checksum field itself) modulo 256."
+  },
+  {
+    "category": "FIX Market Data",
+    "question": "What FIX message type is used for market data snapshots?",
+    "setup_code": "Market Data message:\n8=FIX.4.4|9=200|35=W|49=EXCHANGE|56=CLIENT|34=45|52=20250701-14:30:15|55=AAPL|268=2|269=0|270=150.45|271=1000|269=1|270=150.47|271=800|10=123|",
+    "options": [
+      "35=V (MarketDataRequest)",
+      "35=X (MarketDataIncrementalRefresh)",
+      "35=Y (MarketDataRequestReject)",
+      "35=W (MarketDataSnapshotFullRefresh)"
+    ],
+    "answer": 3,
+    "explanation": "MarketDataSnapshotFullRefresh (35=W) provides complete order book snapshot. MDEntryType: 269=0 (Bid), 269=1 (Offer)."
+  },
+  {
+    "category": "FIX Order Management",
+    "question": "To cancel an existing order, which message type and required field?",
+    "setup_code": "Cancel Request:\n8=FIX.4.4|9=120|35=F|49=CLIENT|56=BROKER|34=91|52=20250701-14:30:20|11=CANCEL001|41=ORD123|55=AAPL|54=1|60=20250701-14:30:20|10=234|",
+    "options": [
+      "35=G with OrigClOrdID (41)",
+      "35=F with OrigClOrdID (41)", 
+      "35=D with CancelFlag",
+      "35=8 with OrdStatus=4"
+    ],
+    "answer": 1,
+    "explanation": "OrderCancelRequest (35=F) requires OrigClOrdID (41) to reference the original order being cancelled. New ClOrdID (11) identifies the cancel request."
+  },
+  {
+    "category": "FIX Protocol Versions",
+    "question": "What's a key difference between FIX 4.4 and FIX 5.0?",
+    "setup_code": "",
+    "options": [
+      "Message compression",
+      "Binary encoding",
+      "Enhanced data types and new message categories",
+      "Encryption support"
+    ],
+    "answer": 2,
+    "explanation": "FIX 5.0 introduced enhanced data types, new message categories (pre-trade, trade, post-trade), and improved session layer protocol (FIXT.1.1)."
+  },
+  {
+    "category": "FIX Trading Scenarios",
+    "question": "In the TransFICC scenario, why did ORD002 get rejected?",
+    "setup_code": "Log analysis showed:\n08:45:13.900Z - Session Logout (35=5)\n08:45:12.001Z - NewOrderSingle ORD002 sent\n08:45:13.950Z - ORD002 marked 'Rejected' with 'SessionNotActive'",
+    "options": [
+      "Invalid symbol",
+      "Insufficient funds",
+      "Session dropped before order processed",
+      "Duplicate order ID"
+    ],
+    "answer": 2,
+    "explanation": "The FIX session logged out at 08:45:13.900Z due to network issues, causing ORD002 to be rejected with 'SessionNotActive' status."
+  },
+  {
+    "category": "FIX Performance",
+    "question": "For low-latency trading, what's most critical in FIX message processing?",
+    "setup_code": "",
+    "options": [
+      "Message compression",
+      "Session failover speed",
+      "Message parsing and validation efficiency", 
+      "Encryption strength"
+    ],
+    "answer": 2,
+    "explanation": "In HFT environments, efficient message parsing, minimal validation overhead, and fast order acknowledgments are critical for latency."
+  },
+  {
+    "category": "FIX Error Handling",
+    "question": "What should happen when receiving a FIX message with invalid checksum?",
+    "setup_code": "Received message:\n8=FIX.4.4|9=54|35=D|49=CLIENT|56=BROKER|34=89|52=20250701-14:30:15|11=ORD123|10=999|\nCalculated checksum should be: 156",
+    "options": [
+      "Process the message anyway",
+      "Send Reject (35=3) and do not increment sequence number",
+      "Disconnect the session immediately",
+      "Request message retransmission"
+    ],
+    "answer": 1,
+    "explanation": "Invalid checksum messages should be rejected with a Reject message (35=3). The sequence number should not be incremented for the invalid message."
+  },
+  {
+    "category": "FIX Integration",
+    "question": "For MarketAxess client integration, what's the typical FIX onboarding sequence?",
+    "setup_code": "",
+    "options": [
+      "Certification testing, production credentials, go-live",
+      "Production access first, then testing",
+      "Documentation only, no testing required",
+      "Direct production deployment"
+    ],
+    "answer": 0,
+    "explanation": "Standard FIX onboarding: 1) Certification testing in sandbox, 2) Production credentials provisioning, 3) Go-live with monitoring."
+  },
+  {
+    "category": "FIX Fixed Income",
+    "question": "What's unique about FIX for municipal bonds vs corporate bonds?",
+    "setup_code": "",
+    "options": [
+      "Different settlement cycles and tax reporting requirements",
+      "No differences in FIX implementation",
+      "Municipal bonds don't use FIX protocol",
+      "Only price format differs"
+    ],
+    "answer": 0,
+    "explanation": "Municipal bonds have different settlement periods (T+1 vs T+2), tax-exempt status requiring special handling, and different regulatory reporting."
+  },
+  {
+    "category": "FIX Sequence Management",
+    "question": "When should you send a ResendRequest (35=2)?",
+    "setup_code": "Expected sequence: 45\nReceived sequence: 47\nGap detected: message 46 missing",
+    "options": [
+      "When session times out",
+      "When detecting sequence number gaps",
+      "When order is rejected", 
+      "When heartbeat fails"
+    ],
+    "answer": 1,
+    "explanation": "ResendRequest (35=2) is sent when sequence number gaps are detected to request retransmission of missing messages."
+  },
+  {
+    "category": "FIX Portfolio Trading",
+    "question": "For portfolio trading in fixed income, which FIX approach is most common?",
+    "setup_code": "",
+    "options": [
+      "Single large NewOrderSingle",
+      "Multiple individual orders with ListID grouping",
+      "Custom non-FIX messaging",
+      "Email-based trading"
+    ],
+    "answer": 1,
+    "explanation": "Portfolio trading typically uses multiple NewOrderSingle messages with a common ListID (tag 66) to group related orders together."
+  },
+  {
+    "category": "FIX Testing",
+    "question": "In your Python FIX engine, how would you validate message structure?",
+    "setup_code": "def validate_fix_message(message):\n    # Implementation needed",
+    "options": [
+      "Check required fields, sequence numbers, and checksum",
+      "Only validate checksum",
+      "Only check message type",
+      "Validation not necessary"
+    ],
+    "answer": 0,
+    "explanation": "Complete FIX validation includes: required header fields, correct sequence numbers, valid checksum, and message-specific required fields."
+  },
+  {
+    "category": "FIX Production Support",
+    "question": "Client reports ExecutionReports arriving out of order. Most likely cause?",
+    "setup_code": "Client received:\nExecID: EXEC002, SeqNum: 156\nExecID: EXEC001, SeqNum: 155 (arrived after EXEC002)",
+    "options": [
+      "Network packet reordering or multiple connections",
+      "Server clock synchronization",
+      "Client application bug",
+      "Exchange processing delays"
+    ],
+    "answer": 0,
+    "explanation": "Out-of-order messages usually indicate network packet reordering or multiple FIX sessions. Check sequence numbers and connection topology."
+  },
+  {
     "category": "UNIX Commands",
     "question": "Create a symbolic link named current_cfg pointing to /etc/eqd_frontend.conf",
     "setup_code": "",
